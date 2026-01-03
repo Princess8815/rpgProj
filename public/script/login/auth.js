@@ -7,6 +7,8 @@ import {
 
 import { auth } from "../main.js";
 
+console.log("auth ran")
+
 registerBtn.onclick = async () => {
   try {
     await createUserWithEmailAndPassword(

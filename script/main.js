@@ -1,4 +1,4 @@
-
+import "./login/auth.js"
 
 
 // Import the functions you need from the SDKs you need

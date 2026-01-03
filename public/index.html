@@ -12,8 +12,24 @@
   >
 
   <link rel="stylesheet" href="../styles/mainStyles.css">
+  <script src="../script/main.js" type="module" defer></script>
 </head>
 <body class="bg-dark text-light">
+
+  <div id="authPanel" class="card bg-secondary p-3 mb-3">
+    <h5>Login / Register</h5>
+
+    <input id="email" type="email" class="form-control mb-2" placeholder="Email">
+    <input id="password" type="password" class="form-control mb-2" placeholder="Password">
+
+    <div class="d-flex gap-2">
+      <button id="loginBtn" class="btn btn-primary">Login</button>
+      <button id="registerBtn" class="btn btn-outline-light">Register</button>
+    </div>
+
+    <div id="authError" class="text-danger mt-2"></div>
+  </div>
+
 
 <div class="container-fluid p-3">
 

@@ -1,89 +1,128 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RPG Prototype</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/12.7.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/12.7.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/12.7.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Hello world</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+  <link rel="stylesheet" href="../styles/mainStyles.css">
+</head>
+<body class="bg-dark text-light">
+
+<div class="container-fluid p-3">
+
+  <!-- TOP BAR -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">🌍 RPG World</h3>
+    <button id="openMapBtn" class="btn btn-outline-info">
+      Open Map
+    </button>
+  </div>
+
+  <div class="row g-3">
+
+    <!-- LEFT: MOVEMENT + AREA -->
+    <div class="col-lg-6">
+
+      <!-- Movement -->
+      <div class="card bg-secondary mb-3">
+        <div class="card-body text-center">
+          <div class="mb-2">
+            <button class="btn btn-light move-btn" data-dir="north">North</button>
+          </div>
+          <div class="d-flex justify-content-center gap-2 mb-2">
+            <button class="btn btn-light move-btn" data-dir="west">West</button>
+            <button class="btn btn-light move-btn" data-dir="east">East</button>
+          </div>
+          <div>
+            <button class="btn btn-light move-btn" data-dir="south">South</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Area View -->
+      <div class="card bg-secondary">
+        <div class="card-header">
+          Area View
+        </div>
+        <div class="card-body area-view" id="areaView">
+          <!-- JS injects area description, enemies, NPCs, etc -->
+          <p class="text-muted mb-0">Nothing here yet… spooky.</p>
+        </div>
+      </div>
+
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+    <!-- RIGHT: STATS + INVENTORY -->
+    <div class="col-lg-6">
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
-  </body>
+      <!-- Stats -->
+      <div class="card bg-secondary mb-3">
+        <div class="card-header">Stats</div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush stats-list">
+            <li class="list-group-item bg-secondary text-light">HP: <span id="statHp">100</span></li>
+            <li class="list-group-item bg-secondary text-light">Attack: <span id="statAtk">10</span></li>
+            <li class="list-group-item bg-secondary text-light">Defense: <span id="statDef">8</span></li>
+            <li class="list-group-item bg-secondary text-light">Speed: <span id="statSpd">5</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Inventory / Equipment -->
+      <div class="card bg-secondary">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs" id="invTabs">
+            <li class="nav-item">
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#inventoryTab">
+                Inventory
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#equipmentTab">
+                Equipment
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-body tab-content">
+
+          <!-- Inventory -->
+          <div class="tab-pane fade show active" id="inventoryTab">
+            <div class="inventory-grid" id="inventoryGrid">
+              <!-- JS inject items -->
+              <div class="inv-slot">Empty</div>
+              <div class="inv-slot">Empty</div>
+              <div class="inv-slot">Empty</div>
+              <div class="inv-slot">Empty</div>
+            </div>
+          </div>
+
+          <!-- Equipment -->
+          <div class="tab-pane fade" id="equipmentTab">
+            <div class="equipment-grid">
+              <div class="equip-slot">Weapon</div>
+              <div class="equip-slot">Armor</div>
+              <div class="equip-slot">Accessory</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
+

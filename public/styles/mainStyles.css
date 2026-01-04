@@ -38,3 +38,54 @@
   padding: 12px;
   text-align: center;
 }
+
+/* FORCE the skills container to be a 3-column grid, no matter what */
+#skills.stats-list {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  align-items: start;
+}
+
+/* FORCE each item to behave like a normal grid item */
+#skills.stats-list > .stat-item {
+  width: auto !important;
+  max-width: 100% !important;
+  grid-column: auto !important;   /* prevents accidental full-row spanning */
+  box-sizing: border-box;
+}
+
+.stat-item span:first-child {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+
+/* hard force grid on the actual element by ID */
+#skills {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+}
+
+/* hard force each stat item to be one grid cell */
+#skills > .stat-item {
+  grid-column: span 1 !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* remove any surprise spacing inside the item */
+#skills > .stat-item > span {
+  display: inline-block;
+}
+
+
+
+
+
+
+

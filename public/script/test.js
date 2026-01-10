@@ -5,6 +5,7 @@ import { savePlayerData, gameState } from "./saveData/saveOrLoadData.js";
 
 import { allStats, getIncDecHp } from "./skills/allStats.js";
 import { updateInventory, addItem, addOrRemoveAmmo } from "./skills/inventory.js";
+import { openCraftMenu } from "./skills/crafting/crafterMenu.js";
 
 
 
@@ -30,6 +31,10 @@ addAxe.addEventListener("click", () => {
     addResetCheckSkill("exploration", "add", 250)
     getIncDecHp("remove", 1)
     addItem("bronzePickaxe");
+})
+
+button3.addEventListener("click", () => {
+    openCraftMenu("smithing")
 })
 
 

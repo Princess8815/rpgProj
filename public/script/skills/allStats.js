@@ -3,7 +3,7 @@ import { allItems } from "../items/itemIndex.js";
 import { parseStack } from "../utilities/textFormat.js";
 import { logger } from "../main.js";
 import { addResetCheckSkill } from "./updateMenu.js";
-import { addItem } from "./inventory.js";
+import { addItem, removeAndCraft } from "./inventory.js";
 import { teleport } from "../nav/generateMap.js";
 
 
@@ -49,6 +49,11 @@ setInterval(() => {
 
     const action = gameState.player.action
 
+    if (action.craft) {
+        craft(action)
+        return
+    }
+
     const tool = allItems[gameState.player.inventory.equipment.tool]
     if (!tool || tool.type != action.tool) {
         logger(`you need a ${action.tool} to do that`)
@@ -88,6 +93,21 @@ setInterval(() => {
 
 
 }, 1000);
+
+function craft(action) {
+    gameState.player.action.craft.time--
+
+    if (gameState.player.action.craft.time <= 0){
+        removeAndCraft(action.craft.key, action.craft.item)
+
+        if (!gameState.player.action) return; //removeAndCraft when fails deletes action intentional
+        gameState.player.action.craft.time = gameState.player.action.craft.maxTime
+        gameState.player.action.craft.qty--
+        if (gameState.player.action.craft.qty <= 0) {
+            gameState.player.action = null
+        }
+    }
+}
 
 //   normalTree: {
 //     name: "Normal Tree",

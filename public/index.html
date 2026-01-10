@@ -35,8 +35,12 @@
   <div id="content">
     <button id="save">save</button>
     <button id="resetInv">reset inv</button>
-    <button id="addLog">add log</button>
-    <button id="addAxe">add axe</button>
+    <button id="addLog">button 1</button>
+    <button id="addAxe">button 2</button>
+    <button id="button3">button 3</button>
+    <button id="button4">button 4</button>
+    <button id="button5">button 5</button>
+    <button id="button6">button 6</button>
 
     <div id="floatingLogBox">
       <!-- content goes here -->
@@ -232,6 +236,42 @@
 </div>
 
 <div id="contextMenu" class="context-menu hidden"></div>
+
+<div id="craftMenu">
+  <div id="craft-items" class="craft-left">
+    <!-- recipe buttons get appended here -->
+  </div>
+
+  <div id="craft-place" class="craft-right">
+    <div class="craft-placeholder">
+      Select a recipe
+    </div>
+
+    <div id="craft-details-menu" class="craft-details hidden">
+      <h3 id="craftItemName"></h3>
+      <p id="craftItemDesc"></p>
+
+      <div class="craft-recipe" id="craftRecipe"></div>
+
+      <div class="craft-quantity">
+        <label for="craftQty">Quantity:</label>
+        <input
+          type="range"
+          id="craftQty"
+          min="1"
+          max="1"
+          value="1"
+        />
+        <span id="craftQtyValue">1</span>
+      </div>
+
+      <button id="craftButton">
+        Craft <span class="home"><button class="backBtm">Back</button> </span>
+      </button>
+    </div>
+  </div>
+</div>
+
 
 
 

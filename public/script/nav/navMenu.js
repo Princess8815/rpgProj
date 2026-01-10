@@ -4,13 +4,10 @@ export function changeScreen(navItem) {
     switch (navItem) {
         case "map":
             mapGenerater();
-            document.getElementById("map").style.display = "block";
-            document.getElementById("content").style.display = "none";
+            showPanel("map")
             break
         case "home":
-            document.getElementById("map").style.display = "none";
-            document.getElementById("cityDetails").style.display = "none";
-            document.getElementById("content").style.display = "block";
+            showPanel("content")
             break
     }
 }
@@ -21,3 +18,20 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
     changeScreen(nav);
   });
 });
+
+export function showPanel(panelId) {
+  const bodyChildren = document.body.children;
+
+  for (const el of bodyChildren) {
+    if (!el.id) continue;
+
+    el.style.display = (el.id === panelId) ? "block" : "none";
+  }
+}
+
+document.querySelectorAll(".homeBtn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    showPanel("content");
+  });
+});
+

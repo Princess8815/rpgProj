@@ -364,6 +364,85 @@ function removeItem(itemOrKey) {
     return false;
 }
 
+export function removeAndCraft(key, item) {
+    const inv = gameState.player.inventory;
+    let recipe = {...item.recipe}
+    let craftable = false
+
+    for (let i = 0; i < 28; i++) {
+        const slotKey = `slot${i}`;
+        if (inv[slotKey] === "empty") continue;
+
+        const { key: invKey, qty: invQty } = parseStack(inv[slotKey]);
+
+
+
+        if (!recipe[invKey]) continue
+
+        if (recipe[invKey] <= invQty) {
+            delete recipe[invKey]
+            if (Object.keys(recipe).length === 0) {
+                craftable = true
+                break;
+            }
+            continue
+        }
+        recipe[invKey] -= invQty
+        if (recipe[invKey] <= 0) {
+            delete recipe[invKey]
+                if (Object.keys(recipe).length === 0) {
+                    craftable = true
+                break;
+            }
+        }
+    }
+
+    if (!craftable) {
+        logger("you dont have enough resources to do that")
+        gameState.player.action = null //even if ran another way theres no multitask 
+        return false //not sure i need false but just in case
+    }
+
+    removeIngredients(item.recipe)
+    let craftAmount = 1
+    if (item.craftAmount) {
+        craftAmount = item.craftAmount
+    }
+
+    addItem(key, craftAmount)
+
+}
+
+export function removeIngredients(recipe) {
+  const inv = gameState.player.inventory;
+
+  // iterate each required ingredient
+  for (const [ingredientKey, requiredQty] of Object.entries(recipe)) {
+    let remaining = requiredQty;
+
+    for (let i = 0; i < 28 && remaining > 0; i++) {
+      const slotKey = `slot${i}`;
+      const slot = inv[slotKey];
+      if (slot === "empty") continue;
+
+      const { key: slotItemKey, qty: slotQty } = parseStack(slot);
+      if (slotItemKey !== ingredientKey) continue;
+
+      // slot fully consumed
+      if (slotQty <= remaining) {
+        inv[slotKey] = "empty";
+        remaining -= slotQty;
+      }
+      // slot partially consumed
+      else {
+        inv[slotKey] = `${slotItemKey} ${slotQty - remaining}`;
+        remaining = 0;
+      }
+    }
+  }
+}
+
+
 
 function reorderInventory() {
     const currentItem = []
@@ -384,11 +463,6 @@ function reorderInventory() {
     autoSavePlayer()
 
 }
-
-
-
-
-
 
 export function addOrRemoveAmmo(doc, item = null, quantity = 1, add = true) {
     let remove = quantity //only used in remove

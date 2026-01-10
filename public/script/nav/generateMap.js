@@ -1,6 +1,6 @@
 import { map } from "./coordsMap.js";
 import { gameState, savePlayerData } from "../saveData/saveOrLoadData.js";
-import { updateCoords } from "../movement/move.js";
+import { updateCoords, updateAreaAndCheckSurroundings } from "../movement/move.js";
 import { changeScreen } from "./navMenu.js";
 
 export function mapGenerater() {
@@ -39,6 +39,7 @@ export function teleport(coords) {
     changeScreen("home");
 
     savePlayerData(gameState.player)
+    updateAreaAndCheckSurroundings(gameState.player.location)
 }
 
 export function showCityDetails(city, fullDetails = false) {

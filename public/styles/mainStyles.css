@@ -1,7 +1,11 @@
 .area-view {
   min-height: 200px;
-  background: #1f1f1f;
+  background: #9a6363;
   border-radius: 4px;
+}
+
+body {
+  background: #3f67a3;
 }
 
 .move-btn {
@@ -15,15 +19,24 @@
 }
 
 .inv-slot {
-  background: #2b2b2b;
+  background: #fcfcfc;
   border: 1px solid #555;
   padding: 12px;
   text-align: center;
   cursor: pointer;
+
+  min-height: 48px;   /* 🔑 THIS */
+  display: flex;      /* center text nicely */
+  align-items: center;
+  justify-content: center;
+}
+
+.selected {
+  background: #11bbd5 !important;
 }
 
 .inv-slot:hover {
-  background: #3a3a3a;
+  background: #555454;
 }
 
 .equipment-grid {
@@ -33,10 +46,16 @@
 }
 
 .equip-slot {
-  background: #2b2b2b;
+  background: #f7f4f4;
   border: 1px solid #888;
   padding: 12px;
   text-align: center;
+  cursor: pointer;
+
+  min-height: 48px;   /* 🔑 THIS */
+  display: flex;      /* center text nicely */
+  align-items: center;
+  justify-content: center;
 }
 
 /* FORCE the skills container to be a 3-column grid, no matter what */
@@ -82,6 +101,133 @@
 #skills > .stat-item > span {
   display: inline-block;
 }
+
+#chatWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 300px;           /* pick your size */
+  width: auto;
+  border: 1px solid #444;
+  background: #111;
+}
+
+#globalChat {
+  flex: 1;                 /* fills remaining space */
+  overflow-y: auto;        /* 🔥 THIS is the key */
+  padding: 8px;
+  color: #eee;
+  font-family: monospace;
+}
+
+#chatInputBar {
+  display: flex;
+  border-top: 1px solid #333;
+}
+
+#chatInput {
+  flex: 1;
+}
+
+#sendChat {
+  width: 80px;
+}
+
+.mapButton {
+  background: #9a6363;
+}
+
+.mapButton:hover {
+  background: #7516cd;
+}
+
+.cityDetails {
+  display: none;
+}
+
+#contextMenu {
+    position: fixed;   /* 🔑 NOT absolute */
+    z-index: 1000;
+    background: #0c1314;
+    cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.menu-item:hover {
+  background: #06b9d4;
+}
+
+html {
+  user-select: none;
+}
+
+
+#floatingLogBox {
+  position: absolute;      /* ← key change */
+  top: 5px;
+  left: 500px;
+
+  width: 500px;
+  height: 120px;
+
+  /*background: #0c1314;*/
+  color: #f5f5f5;
+  border-radius: 6px;
+
+  padding: 8px;
+  overflow-y: auto;
+
+  z-index: 10;
+  box-sizing: border-box;
+
+  font-family: monospace;
+  font-size: 13px;
+}
+
+#statsPanel {
+  position: absolute;      /* ← key change */
+  top: 5px;
+  left: 1250px;
+
+  width: 250px;
+  height: 120px;
+
+  /*background: pink;*/
+  color: #f5f5f5;
+  border-radius: 6px;
+
+  padding: 8px;
+  overflow-x: hidden;
+
+  z-index: 10;
+  box-sizing: border-box;
+
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.stats-menu {
+  margin: 5px;
+
+  width: 100%;              /* control fill here */
+  height: auto;
+  background: #4caf50;     /* solid color */
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+
+
+
 
 
 

@@ -1,0 +1,162 @@
+
+
+export const pickaxes = {
+  bronzePickaxe: {
+    name: "Bronze Pickaxe",
+    description: "Used to gather ores",
+    type: "pickaxe",
+    tier: 1,
+    dbl: "equip",
+    useLevel: 1,
+    useSkill: "mining",
+    craftable: true,
+    craftLevel: 1,
+    craftSkill: "smithing",
+    recipe: { bronzeIngot: 2 },
+    craftXp: 25,
+    stats: { gatherPower: 1 },
+    slot: "tool",
+    stackable: false,
+    breakable: "none"
+  },
+
+  ironPickaxe: {
+    name: "Iron Pickaxe",
+    description: "Stronger pickaxe for tougher rocks",
+    type: "pickaxe",
+    tier: 2,
+    dbl: "equip",
+    useLevel: 5,
+    useSkill: "mining",
+    craftable: true,
+    craftLevel: 5,
+    craftSkill: "smithing",
+    recipe: { ironIngot: 2 },
+    craftXp: 45,
+    stats: { gatherPower: 2 },
+    slot: "tool",
+    stackable: false,
+    breakable: "none"
+  },
+
+  steelPickaxe: {
+    name: "Steel Pickaxe",
+    description: "Reliable tool for sustained mining",
+    type: "pickaxe",
+    tier: 3,
+    dbl: "equip",
+    useLevel: 10,
+    useSkill: "mining",
+    craftable: true,
+    craftLevel: 10,
+    craftSkill: "smithing",
+    recipe: { steelIngot: 2 },
+    craftXp: 75,
+    stats: { gatherPower: 3 },
+    slot: "tool",
+    stackable: false,
+    breakable: "none"
+  },
+
+  mithrilPickaxe: {
+    name: "Mithril Pickaxe",
+    description: "Lightweight and razor sharp",
+    type: "pickaxe",
+    tier: 4,
+    dbl: "equip",
+    useLevel: 20,
+    useSkill: "mining",
+    craftable: true,
+    craftLevel: 20,
+    craftSkill: "smithing",
+    recipe: { mithrilIngot: 2 },
+    craftXp: 120,
+    stats: { gatherPower: 5 },
+    slot: "tool",
+    stackable: false,
+    breakable: "none"
+  },
+
+  adamantitePickaxe: {
+    name: "Adamantite Pickaxe",
+    description: "Cracks reinforced stone effortlessly",
+    type: "pickaxe",
+    tier: 5,
+    dbl: "equip",
+    useLevel: 30,
+    useSkill: "mining",
+    craftable: true,
+    craftLevel: 30,
+    craftSkill: "smithing",
+    recipe: { adamantiteIngot: 2 },
+    craftXp: 180,
+    stats: { gatherPower: 7 },
+    slot: "tool",
+    stackable: false,
+    breakable: "none"
+  },
+
+  staritePickaxe: {
+    name: "Starite Pickaxe",
+    description: "Forged from stellar fragments",
+    type: "pickaxe",
+    tier: 6,
+    dbl: "equip",
+    useLevel: 45,
+    useSkill: "mining",
+    craftable: true,
+    craftLevel: 45,
+    craftSkill: "smithing",
+    recipe: { stariteIngot: 2 },
+    craftXp: 300,
+    stats: { gatherPower: 10 },
+    slot: "tool",
+    stackable: false,
+    breakable: "none"
+  },
+
+  legendsPickaxe: {
+    name: "Legends Pickaxe",
+    description: "A relic whispered of by master miners",
+    type: "pickaxe",
+    tier: 7,
+    dbl: "equip",
+    useLevel: 60,
+    useSkill: "mining",
+    craftable: false,
+    stats: { gatherPower: 14 },
+    slot: "tool",
+    stackable: false,
+    breakable: "none"
+  },
+
+  imbuedPickaxe: {
+    name: "Imbued Pickaxe",
+    description: "Infused with ancient mining magic",
+    type: "pickaxe",
+    tier: 8,
+    dbl: "equip",
+    useLevel: 70,
+    useSkill: "mining",
+    craftable: false,
+    stats: { gatherPower: 18 },
+    slot: "tool",
+    stackable: false,
+    breakable: "none"
+  },
+
+  godsPickaxe: {
+    name: "Gods Pickaxe",
+    description: "Capable of splitting divine stone",
+    type: "pickaxe",
+    tier: 9,
+    dbl: "equip",
+    useLevel: 85,
+    useSkill: "mining",
+    craftable: false,
+    stats: { gatherPower: 25 },
+    slot: "tool",
+    stackable: false,
+    breakable: "none"
+  }
+};

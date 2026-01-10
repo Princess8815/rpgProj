@@ -1,24 +1,35 @@
 import { auth, db } from "./firebase.js";
+import { addResetCheckSkill } from "./skills/updateMenu.js";
 
 import { savePlayerData, gameState } from "./saveData/saveOrLoadData.js";
 
-north.onclick = async () => {
-    if (!auth.currentUser) {
-        alert("you must register or log in first")
-        return
-    }
-  if (!gameState.isHydrated) {
-    console.warn("Game not ready yet");
-    return;
-  }
-  if (Number.isNaN(gameState.player.stats.hp)){
-    gameState.player.stats.hp = 0
-  }
+import { allStats, getIncDecHp } from "./skills/allStats.js";
+import { updateInventory, addItem, addOrRemoveAmmo } from "./skills/inventory.js";
 
-  gameState.player.stats.hp += 1;
 
-  document.getElementById("statHp").textContent =
-    gameState.player.stats.hp;
 
-  await savePlayerData(gameState.player);
-};
+
+
+
+resetInv.addEventListener("click", () => {
+    gameState.player.inventory = null
+    updateInventory()
+    savePlayerData(gameState.player)
+})
+
+addLog.addEventListener("click", () => {
+    const amountRemoved = addOrRemoveAmmo(null, null, 2, false);
+    console.log(amountRemoved)
+    //addResetCheckSkill("exploration", "reset")
+    allStats()
+})
+
+addAxe.addEventListener("click", () => {
+    // addItem("bronzeAxe");
+    // addItem("ironAxe")
+    addResetCheckSkill("exploration", "add", 250)
+    getIncDecHp("remove", 1)
+    addItem("bronzePickaxe");
+})
+
+

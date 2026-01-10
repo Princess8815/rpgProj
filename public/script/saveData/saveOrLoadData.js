@@ -1,5 +1,8 @@
 import { auth, db } from "../firebase.js";
 
+import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+
 import {
   doc,
   setDoc,
@@ -15,12 +18,18 @@ export const gameState = {
 export const emptyGameState = {
   stats: {},
   position: {},
-  inventory: [],
-  equipment: {}
+  inventory: {},
+  equipment: {},
+  version: 1,
+  savedVersion: 1
 };
 
 
 export async function savePlayerData(playerData) {
+    console.log("saved" + " " + gameState.player.version + " " + gameState.player.savedVersion)
+
+    gameState.player.savedVersion = gameState.player.version
+
   const user = auth.currentUser;
   if (!user) throw new Error("Not logged in");
 
@@ -53,4 +62,40 @@ export function hydrateGameState(playerData) {
 
   gameState.isHydrated = true;
 }
+
+let lastSaveTime = 0;
+let trailingTimer = null;
+
+export function autoSavePlayer() {
+  gameState.player.version += 1
+  const now = Date.now();
+
+  // If we haven't saved recently, save immediately
+  if (now - lastSaveTime >= 30_000) {
+    lastSaveTime = now;
+    savePlayerData(gameState.player);
+  }
+
+  // Always reset the trailing save
+  if (trailingTimer) {
+    clearTimeout(trailingTimer);
+  }
+
+  trailingTimer = setTimeout(() => {
+    lastSaveTime = Date.now();
+    savePlayerData(gameState.player);
+    trailingTimer = null;
+  }, 30_000);
+}
+
+export function saveIfVersionChanged() {
+    if (gameState.player.version <= gameState.player.savedVersion) {
+        console.log(`version ${gameState.player.version} ${gameState.player.savedVersion}`)
+        return
+    }
+    
+    
+    savePlayerData(gameState.player)
+}
+
 

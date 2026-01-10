@@ -1,5 +1,7 @@
 import { auth, db } from "../firebase.js";
 import { savePlayerData, gameState } from "../saveData/saveOrLoadData.js";
+import { autoSavePlayer } from "../saveData/saveOrLoadData.js";
+import { logger } from "../main.js";
 
 export const skillsInGame = {
   attack: { name: "Attack", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
@@ -25,26 +27,37 @@ export const skillsInGame = {
 }; //it is possible i dont need the xp stuff stored here
 
 export function UpdateSkillMenu() {
-  const skillMenu = document.getElementById("skills")
-  if (!skillMenu) return
-  skillMenu.innerHTML = ""
+  const skillMenu = document.getElementById("skills");
+  if (!skillMenu) return;
+
+  skillMenu.innerHTML = "";
 
   Object.entries(skillsInGame).forEach(([key, value]) => {
-    const item = document.createElement("div")
-    item.classList.add("bg-secondary", "text-light", "stat-item")
+    const item = document.createElement("div");
 
-    const nameSpan = document.createElement("span")
-    nameSpan.textContent = value.name
+    // force it to behave like a grid item no matter what
+    item.style.display = "flex";
+    item.style.justifyContent = "space-between";
+    item.style.alignItems = "center";
+    item.style.padding = ".5rem .75rem";
+    item.style.border = "1px solid rgba(255,255,255,.2)";
+    item.style.borderRadius = "6px";
+    item.style.boxSizing = "border-box";
 
-    const levelSpan = document.createElement("span")
-    const level = gameState.player.stats?.[key]?.level ?? 1
-    levelSpan.textContent = level
+    const nameSpan = document.createElement("div");
+    nameSpan.textContent = value.name + " " + String(gameState.player.stats?.[key]?.level ?? 1);
+    const xp = gameState.player.stats?.[key]?.xp ?? 0
+    const nextXp = gameState.player.stats?.[key]?.nextXp ?? 83
 
-    item.appendChild(nameSpan)
-    item.appendChild(levelSpan)
-    skillMenu.appendChild(item)
-  })
+    nameSpan.title = "remaining xp " + (nextXp - xp) + "\nTotal Xp " + xp
+
+    item.appendChild(nameSpan);
+
+
+    skillMenu.appendChild(item);
+  });
 }
+
 
 export function updateSkillsLogic() {
     Object.entries(skillsInGame).forEach(([key, value]) => {
@@ -61,12 +74,13 @@ export function updateSkillsLogic() {
             gameState.player.stats[key].diff = Math.round(diff * 1.1)
             gameState.player.stats[key].nextXp += gameState.player.stats[key].diff
             nextXp = gameState.player.stats[key].nextXp //adjusted for the while loop
-            savePlayerData(gameState.player)
         }
     })
+    autoSavePlayer();
 }
 
 export function addResetCheckSkill(skill, mode = "get", amount = 0) {
+    //logger(`${skill} ${mode} ${amount}`, "pink")
     let level = gameState.player.stats?.[skill]?.level ?? 1
     if (!gameState.player.stats[skill]) {
         gameState.player.stats[skill] = { xp: 0, level: 1, nextXp: 83, diff: 83 }
@@ -83,9 +97,13 @@ export function addResetCheckSkill(skill, mode = "get", amount = 0) {
             return level
         case "reset": //troubleshooting or rare occurrences but def needed
             gameState.player.stats[skill].xp = 0
+            gameState.player.stats[skill].level = 1
+            gameState.player.stats[skill].diff = 83
+            gameState.player.stats[skill].nextXp = 83
             updateSkillsLogic();
             UpdateSkillMenu();
             break
             
     }
+    autoSavePlayer()
 }

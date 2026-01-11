@@ -25,7 +25,7 @@ body {
   text-align: center;
   cursor: pointer;
 
-  min-height: 48px;   /* 🔑 THIS */
+  min-height: 48px;   
   display: flex;      /* center text nicely */
   align-items: center;
   justify-content: center;
@@ -41,7 +41,8 @@ body {
 
 .equipment-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(5, 1fr);
   gap: 8px;
 }
 
@@ -51,8 +52,9 @@ body {
   padding: 12px;
   text-align: center;
   cursor: pointer;
+  max-height: 40px;
 
-  min-height: 48px;   /* 🔑 THIS */
+  min-height: 40px; 
   display: flex;      /* center text nicely */
   align-items: center;
   justify-content: center;
@@ -79,6 +81,10 @@ body {
   word-break: break-word;
   overflow-wrap: anywhere;
   min-width: 0;
+}
+
+#skillInfo {
+  margin: 5px;
 }
 
 
@@ -271,6 +277,39 @@ html {
   margin-top: 15px;
   padding: 8px 14px;
   cursor: pointer;
+}
+
+.scroll-hidden {
+  overflow-y: auto;          /* keep scrolling */
+  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;  /* IE / old Edge */
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari */
+}
+
+
+.scroll-hover {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.scroll-hover:hover {
+  scrollbar-color: rgba(255,255,255,0.4) transparent;
+}
+
+.scroll-hover::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-hover::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.scroll-hover:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0.4);
 }
 
 

@@ -1,6 +1,16 @@
 
 
 export const miningItems = {
+  runeEssence: {
+    name: "Raw Rune Stones",
+    dbl: "none",
+    stackable: true
+  },
+  pureEssence: {
+    name: "Pure Rune Stones",
+    dbl: "none",
+    stackable: true
+  },
   tinOre: {
     name: "Tin Ore",
     dbl: "none",

@@ -39,18 +39,20 @@ export function allStats(){
     }
 
 
-    logger(`${log} ${stats.gatherPower} skills/allStats allStats`)
+    //logger(`${log} ${stats.gatherPower} skills/allStats allStats`)
     return stats
 }
 
 
 setInterval(() => {
+    actionDisplay()
     if (!gameState?.player?.action) return;
 
     const action = gameState.player.action
 
     if (action.craft) {
         craft(action)
+        actionDisplay()
         return
     }
 
@@ -90,15 +92,50 @@ setInterval(() => {
             gameState.player.action = null
         }
     }
+    actionDisplay()
 
 
 }, 1000);
+
+export function actionDisplay(){
+    const actionEl = document.getElementById("action")
+    if (!gameState.player.action) {
+        actionEl.textContent = "idle"
+        actionEl.style.width = "100%"
+        actionEl.style.background = "#5DADE2"
+        return;
+    }
+
+    const action = gameState.player.action
+
+    if (action.craft) {
+        const time = action.craft.time
+        const max = action.craft.maxTime
+        const percent = (time / max) * 100;
+        actionEl.textContent = `${time}/${max}`
+        actionEl.style.width = `${percent}%`
+        actionEl.style.background = "#8E44AD"
+        return;
+    }
+
+    const health = action.health
+    const maxHealth = action.maxHealth
+    const percent = (health / maxHealth) * 100;
+    actionEl.textContent = `${health}/${maxHealth}`
+    actionEl.style.width = `${percent}%`
+    actionEl.style.background = "#A97142"
+
+}
 
 function craft(action) {
     gameState.player.action.craft.time--
 
     if (gameState.player.action.craft.time <= 0){
         removeAndCraft(action.craft.key, action.craft.item)
+        const skillXp = action.craft.item.craftXp
+        const skillName = action.craft.item.craftSkill
+
+        addResetCheckSkill(skillName, "add", skillXp)
 
         if (!gameState.player.action) return; //removeAndCraft when fails deletes action intentional
         gameState.player.action.craft.time = gameState.player.action.craft.maxTime

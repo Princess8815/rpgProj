@@ -39,17 +39,17 @@
     <button id="addAxe">button 2</button>
     <button id="button3">button 3</button>
     <button id="button4">button 4</button>
-    <button id="button5">button 5</button>
-    <button id="button6">button 6</button>
 
-    <div id="floatingLogBox">
+
+    <div id="floatingLogBox" class="scroll-hover">
       <!-- content goes here -->
   </div>
 
     <div id="statsPanel">
-      <div class="stats-menu" id="name">name</div>
-      <div class="stats-menu"  id="hp">hp</div>
-      <div class="stats-menu"  id="energy">energy</div>
+      <div class="stats-menu" id="name">Name</div>
+      <div class="stats-menu"  id="hp">Health</div>
+      <div class="stats-menu"  id="energy">Energy</div>
+      <div class="stats-menu"  id="action">Action</div>
   </div>
 
     <div class="container-fluid p-3">
@@ -93,7 +93,7 @@
             <!-- JS injects area description, enemies, NPCs, etc -->
           </div>
             <div id="chatWrapper">
-            <div id="globalChat"></div>
+            <div id="globalChat" class="scroll-hover"></div>
 
             <div id="chatInputBar">
               <input id="chatInput" type="text" autocomplete="off" />
@@ -107,16 +107,6 @@
       <!-- RIGHT: STATS + INVENTORY -->
       <div class="col-lg-6">
 
-        <!-- Stats -->
-        <div class="card bg-secondary mb-3">
-          <div class="card-header">Stats</div>
-          <div class="card-body">
-            <div id="skills" class="stats-list"></div>
-
-          </div>
-        </div>
-
-        <!-- Inventory / Equipment -->
         <div class="card bg-secondary">
           <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs" id="invTabs">
@@ -128,6 +118,11 @@
               <li class="nav-item">
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#equipmentTab">
                   Equipment
+                </button>
+              </li>
+               <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#skillInfo">
+                  Skills
                 </button>
               </li>
             </ul>
@@ -150,8 +145,20 @@
               </div>
             </div>
 
+                    <!-- Stats -->
+            <div id="skillInfo" class="card bg-secondary mb-3 tab-pane fade">
+              <div class="card-header">Stats</div>
+              <div class="card-body">
+                <div id="skills" class="stats-list"></div>
+
+              </div>
+            </div>
+
           </div>
         </div>
+
+
+
 
       </div>
 

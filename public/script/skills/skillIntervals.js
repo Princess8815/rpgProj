@@ -4,7 +4,7 @@ import { addResetCheckSkill } from "./updateMenu.js";
 import { logger } from "../main.js";
 
 function getExplorationTimer() {
-    logger(`energy ${gameState.player.energy}`)
+    //logger(`energy ${gameState.player.energy}`)
     const explorationLevel = addResetCheckSkill("exploration")
     return Math.max((180 - explorationLevel) * 1000, 1000) //5 will be 120 but testing purposes
 }

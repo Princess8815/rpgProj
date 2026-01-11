@@ -83,6 +83,10 @@ export function updateInventory() {
         invItem.textContent = `${actualItem.name} ${realQuantity}`
         invItem.title = actualItem.description
         invItem.addEventListener("click", () => {
+            if (actualItem.dbl && actualItem.dbl != "none") {
+                runDouble(actualItem.dbl, actualItem, quantity) 
+                return 
+            }
             if (!gameState.player.selected) {
                 invItem.classList.add("selected");
                 gameState.player.selected = {
@@ -113,12 +117,6 @@ export function updateInventory() {
             }
             
         })
-
-        invItem.addEventListener("dblclick", (e) => {
-            if (actualItem.dbl) {
-                runDouble(actualItem.dbl, actualItem, quantity) 
-            }
-        });
 
         invItem.addEventListener("contextmenu", (e) => {
             e.preventDefault(); // kill the default browser menu
@@ -196,6 +194,26 @@ window.addEventListener("click", () => {
 
 });
 
+const equipMap = {
+  helmet:    { c: 2, r: 1 },
+
+  necklace: { c: 2, r: 2 },
+
+  mainhand: { c: 1, r: 3 },
+  chest:    { c: 2, r: 3 },
+  offhand:  { c: 3, r: 3 },
+
+  gloves:   { c: 1, r: 5 },
+  legs:     { c: 2, r: 4 },
+  ring:     { c: 3, r: 5 },
+
+  boots:    { c: 2, r: 5 },
+
+  tool:     { c: 1, r: 1 },
+  ammo:     { c: 3, r: 1 },
+};
+
+
 export function equip(item = null, quantity = 1) {
     //trust item.slot always matches equipslot useSkill always skill useLevel always level all are always on equipables equip only ran from its item
     let equip = gameState.player.inventory.equipment
@@ -204,6 +222,10 @@ export function equip(item = null, quantity = 1) {
     const ammoDoc = document.createElement("div")
     ammoDoc.id = "ammo"
     ammoDoc.classList.add("equip-slot")
+    const ammoLocationKey = equipMap.ammo
+
+    ammoDoc.style.gridColumn = ammoLocationKey.c
+    ammoDoc.style.gridRow = ammoLocationKey.r
     equipDoc.appendChild(ammoDoc)
     const equipSlots = ["helmet", "chest", "legs", "boots", "gloves", "necklace", "ring", "mainhand", "offhand", "tool"]
     if (item) {
@@ -242,19 +264,21 @@ export function equip(item = null, quantity = 1) {
         }
     }
 
-    for (const key of equipSlots) {
-        const equipItem = document.createElement("div")
-        equipItem.classList.add("equip-slot")
-        if (!equip[key]) {
-            equipItem.textContent = key
-            equipDoc.appendChild(equipItem)
-            continue
-        }
-        equipItem.textContent = allItems[equip[key]].name
-        equipItem.addEventListener("click", () => {
-            unEquip(key)
-        })
-        equipDoc.appendChild(equipItem)
+    for (const [slot, pos] of Object.entries(equipMap)) {
+    const el = document.createElement("div");
+    el.classList.add("equip-slot");
+
+    el.style.gridColumn = pos.c;
+    el.style.gridRow = pos.r;
+
+    if (equip[slot]) {
+        el.textContent = allItems[equip[slot]].name;
+        el.addEventListener("click", () => unEquip(slot));
+    } else {
+        el.textContent = slot;
+    }
+
+    equipDoc.appendChild(el);
     }
     addOrRemoveAmmo(equipDoc);
     autoSavePlayer()

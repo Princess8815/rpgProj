@@ -1,6 +1,33 @@
 
 
 export const oreTypes = {
+
+    rawRuneStones: {
+        name: "Raw Rune Stones",
+        type: "resource",
+        coords: {},
+        skill: "mining",
+        level: 1,
+        xp: 20000,
+        item: "runeEssence",
+        amount: 1,
+        health: 5,
+        tool: "pickaxe",
+        depleteChance: 0.20
+    },
+    pureRuneStones: {
+        name: "Pure Rune Stones",
+        type: "resource",
+        coords: {},
+        skill: "mining",
+        level: 45,
+        xp: 20000,
+        item: "pureEssence",
+        amount: 1,
+        health: 10,
+        tool: "pickaxe",
+        depleteChance: 0.20
+    },
   // 1
   tinOre: {
     name: "Tin Ore",

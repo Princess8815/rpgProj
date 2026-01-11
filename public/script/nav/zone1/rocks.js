@@ -10,6 +10,8 @@ export function addRocks() {
   let rockKey = 0;
 
   const coordSets = {
+    rawRuneStones: ["1_0"],
+    pureRuneStones: ["-1_-1"],
     // starter area
     tinOre: ["2_0", "4_3", "6_5"],
     copperOre: ["3_2", "5_4", "7_6"],

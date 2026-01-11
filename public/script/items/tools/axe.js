@@ -15,8 +15,8 @@ export const axes = {
         recipe: { bronzeIngot: 2 },
         craftXp: 25,
         stats: { gatherPower: 1 },
-        slot: "ammo",
-        stackable: true,
+        slot: "tool",
+        stackable: false,
         breakable: "none"
     },
 

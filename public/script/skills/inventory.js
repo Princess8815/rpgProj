@@ -199,7 +199,9 @@ export function equip(item = null, quantity = 1) {
     // Trust: item.slot matches equipment slot; equip is only called for equippable items.
     let equipment = gameState.player.inventory.equipment;
 
-    normalizeEquipmentState();
+    if (!item) {
+        normalizeEquipmentState();
+    }
 
     if (item) {
         if (!equipment || typeof equipment !== "object" || Object.keys(equipment).length === 0) {
@@ -265,6 +267,12 @@ function normalizeEquipmentState() {
     if (!mainhandItem?.twoHanded) return;
 
     const { key: offhandKey, qty: offhandQty } = parseStack(offhandEntry);
+    if (inventoryHasItem(offhandKey)) {
+        delete equipment.offhand;
+        logger("your offhand was unequipped because your mainhand requires two hands");
+        return;
+    }
+
     const moved = addItem(offhandKey, offhandQty ?? 1);
     if (moved) {
         delete equipment.offhand;
@@ -272,6 +280,17 @@ function normalizeEquipmentState() {
     } else {
         logger("inventory is too full to unequip your offhand");
     }
+}
+
+function inventoryHasItem(itemKey) {
+    const inv = gameState.player.inventory;
+    for (let i = 0; i < INVENTORY_SLOTS; i++) {
+        const slotKey = `slot${i}`;
+        if (inv[slotKey] === "empty") continue;
+        const { key } = parseStack(inv[slotKey]);
+        if (key === itemKey) return true;
+    }
+    return false;
 }
 
 function RenderEquip() {

@@ -32,6 +32,8 @@ addAxe.addEventListener("click", () => {
     addResetCheckSkill("exploration", "add", 250)
     getIncDecHp("remove", 1)
     addItem("bronzePickaxe");
+    addItem("normalShortbow");
+    addItem("bronzeShield");
 })
 
 button3.addEventListener("click", () => {

@@ -92,6 +92,11 @@ export function updateAreaAndCheckSurroundings(coords) {
                         }
                     })
                     buttonRow.appendChild(areaActionButton)
+                    break;
+                case "monster":
+                    if (area.aggressive) {
+                        
+                    }
             }
             
         }

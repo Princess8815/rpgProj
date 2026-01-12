@@ -191,7 +191,13 @@ export function getIncDecHp(mode = "get", amount) {
   }
     const playerHpLevel = addResetCheckSkill("hp")
 
-    const max = gameState.player.maxHealth = playerHpLevel * 10
+    let addedHealth = 0
+
+    if (gameState.player?.stats?.healthBoost) {
+        addedHealth = gameState.player.stats.healthBoost
+    }
+
+    const max = gameState.player.maxHealth = playerHpLevel * 10 + addedHealth
     if (gameState.player.health === null || gameState.player.health === undefined) {
         gameState.player.health = max
     }

@@ -225,15 +225,6 @@ export function equip(item = null, quantity = 1) {
     //trust item.slot always matches equipslot useSkill always skill useLevel always level all are always on equipables equip only ran from its item
     let equipment = gameState.player.inventory.equipment
     const equipDoc = document.getElementById("equipmentGrid")
-    equipDoc.innerHTML = ""
-    const ammoDoc = document.createElement("div")
-    ammoDoc.id = "ammo"
-    ammoDoc.classList.add("equip-slot")
-    const ammoLocationKey = equipMap.ammo
-
-    ammoDoc.style.gridColumn = ammoLocationKey.c
-    ammoDoc.style.gridRow = ammoLocationKey.r
-    equipDoc.appendChild(ammoDoc)
     const equipSlots = ["helmet", "chest", "legs", "boots", "gloves", "necklace", "ring", "mainhand", "offhand", "tool"]
     if (item) {
         if (!equipment || typeof equipment != "object" ||  Object.keys(equipment).length === 0) {
@@ -242,7 +233,7 @@ export function equip(item = null, quantity = 1) {
 
         const itemSlotType = item.slot
         if (itemSlotType === "ammo"){
-            addOrRemoveAmmo(equipDoc, item, quantity, true)
+            addOrRemoveAmmo( item, quantity, true)
         }
         else {
             const equipKey = getItemKey(item)
@@ -254,8 +245,8 @@ export function equip(item = null, quantity = 1) {
             if (currentReqSkill >= item.useLevel) { //
                 if (item.twoHanded && equipment.offhand) {
                     logger("you need both hands free to equip that")
-                    equip()
-                    return 
+                    RenderEquip()   
+                    return //equip()
                 }
                 if (itemSlotType === "offhand" && equipment.mainhand) {
                     const mainhand = parseStack(equipment.mainhand)
@@ -263,8 +254,9 @@ export function equip(item = null, quantity = 1) {
                     if (mainItem.twoHanded) {
                         logger("you are carrying a really heavy weapon you arent a super hero")
                         logger("even if you can carry thousands of pounds in yoyr inventory")
-                        equip()
-                        return
+                        delete gameState.player.inventory.equipment.offhand
+                        RenderEquip()
+                        return //equip()
                     }
 
                 }
@@ -285,6 +277,23 @@ export function equip(item = null, quantity = 1) {
             }
         }
     }
+    RenderEquip()
+    autoSavePlayer()
+}
+
+function RenderEquip(){
+    let equipment = gameState.player.inventory.equipment
+    const equipSlots = ["helmet", "chest", "legs", "boots", "gloves", "necklace", "ring", "mainhand", "offhand", "tool"]
+    const equipDoc = document.getElementById("equipmentGrid")
+    equipDoc.innerHTML = ""
+    const ammoDoc = document.createElement("div")
+    ammoDoc.id = "ammo"
+    ammoDoc.classList.add("equip-slot")
+    const ammoLocationKey = equipMap.ammo
+
+    ammoDoc.style.gridColumn = ammoLocationKey.c
+    ammoDoc.style.gridRow = ammoLocationKey.r
+    equipDoc.appendChild(ammoDoc)
 
     for (const [slot, pos] of Object.entries(equipMap)) {
     const el = document.createElement("div");
@@ -294,16 +303,22 @@ export function equip(item = null, quantity = 1) {
     el.style.gridRow = pos.r;
 
     if (equipment[slot]) {
-        el.textContent = allItems[equipment[slot]].name;
-        el.addEventListener("click", () => unEquip(slot));
+        const { key } = parseStack(equipment[slot]);
+        const itemDef = allItems[key];
+
+        if (itemDef) {
+            el.textContent = itemDef.name;
+            el.addEventListener("click", () => unEquip(slot));
+        } else {
+            el.textContent = slot;
+        }
     } else {
         el.textContent = slot;
     }
 
     equipDoc.appendChild(el);
     }
-    addOrRemoveAmmo(equipDoc);
-    autoSavePlayer()
+    addOrRemoveAmmo();
 }
 
 function unEquip(slot) {
@@ -510,7 +525,7 @@ function reorderInventory() {
 
 }
 
-export function addOrRemoveAmmo(doc, item = null, quantity = 1, add = true) {
+export function addOrRemoveAmmo(item = null, quantity = 1, add = true) {
     let remove = quantity //only used in remove
     const equip = gameState.player.inventory.equipment
 

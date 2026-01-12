@@ -3,6 +3,7 @@ import { towns } from "./zone1/area1.js";
 import { trees, addTrees } from "./zone1/trees.js";
 import { rocks, addRocks } from "./zone1/rocks.js";
 import { fieldSets } from "./zone1/fields.js";
+import { monsterSet } from "./zone1/monsters.js";
 
 export function addNode(coordSets) {
   let typeVal = 0;
@@ -32,7 +33,8 @@ export const map = {
     resources: {
         ...trees,
         ...rocks,
-        ...addNode(fieldSets)
+        ...addNode(fieldSets),
+        ...addNode(monsterSet)
     },
     npcs: {
 

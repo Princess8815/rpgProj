@@ -4,26 +4,33 @@ import { autoSavePlayer } from "../saveData/saveOrLoadData.js";
 import { logger } from "../main.js";
 
 export const skillsInGame = {
-  attack: { name: "Attack", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  strength: { name: "Strength", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  defense: { name: "Defense", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  hp: { name: "Hitpoints", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  magic: { name: "Magic", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  range: { name: "Ranged", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  woodcutting: { name: "Woodcutting", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  mining: { name: "Mining", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  smithing: { name: "Smithing", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  fletching: { name: "Fletching", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  runecrafting: { name: "Runecrafting", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  prayer: { name: "Prayer", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  summoning: { name: "Summoning", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  sailing: { name: "Sailing", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  construction: { name: "Construction", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
+  attack: { name: "Attack"},
+  strength: { name: "Strength"},
+  defense: { name: "Defense"},
+  hp: { name: "Hitpoints"},
+  magic: { name: "Magic"},
+  range: { name: "Ranged"},
+  woodcutting: { name: "Woodcutting"},
+  mining: { name: "Mining"},
+  smithing: { name: "Smithing"},
+  fletching: { name: "Fletching"},
+  runecrafting: { name: "Runecrafting"},
+  prayer: { name: "Prayer"},
+  summoning: { name: "Summoning"},
+  sailing: { name: "Sailing"},
+  construction: { name: "Construction"},
 
   // 3 unique skills (same base values, no cheating)
-  exploration: { name: "Exploration", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  survival: { name: "Survival", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 },
-  arcana: { name: "Arcana", xp: 0, remainingXp: 83, nextLvl: 83, nextDif: 83 }
+  exploration: { name: "Exploration"},
+  survival: { name: "Survival"},
+  arcana: { name: "Arcana"},
+  crafting: {name: "Crafting"},
+  fishing: {name: "Fishing"},
+  cooking: {name: "Cooking"},
+
+  farming: {name: "Farming"},
+  hunting: {name: "Hunting"},
+  engineering: {name: "Engineering"}
 }; //it is possible i dont need the xp stuff stored here
 
 export function UpdateSkillMenu() {
@@ -43,14 +50,21 @@ export function UpdateSkillMenu() {
     item.style.border = "1px solid rgba(255,255,255,.2)";
     item.style.borderRadius = "6px";
     item.style.boxSizing = "border-box";
+    
 
     const nameSpan = document.createElement("div");
     nameSpan.textContent = value.name + " " + String(gameState.player.stats?.[key]?.level ?? 1);
     const xp = gameState.player.stats?.[key]?.xp ?? 0
     const nextXp = gameState.player.stats?.[key]?.nextXp ?? 83
+    const diff = gameState.player.stats?.[key]?.diff ?? 83
+    const remainingXp = nextXp - xp
 
-    nameSpan.title = "remaining xp " + (nextXp - xp) + "\nTotal Xp " + xp
+    nameSpan.title = "remaining xp " + remainingXp + "\nTotal Xp " + xp
 
+    const percent = ((diff - remainingXp) / diff) * 100
+
+
+    item.style.background = `linear-gradient(to right, green ${percent}%, white ${percent}%)`;
     item.appendChild(nameSpan);
 
 

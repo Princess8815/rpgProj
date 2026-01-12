@@ -6,6 +6,7 @@ import { savePlayerData, gameState } from "./saveData/saveOrLoadData.js";
 import { allStats, getIncDecHp } from "./skills/allStats.js";
 import { updateInventory, addItem, addOrRemoveAmmo } from "./skills/inventory.js";
 import { openCraftMenu } from "./skills/crafting/crafterMenu.js";
+import { testDamage } from "./combat/damage.js";
 
 
 
@@ -35,6 +36,10 @@ addAxe.addEventListener("click", () => {
 
 button3.addEventListener("click", () => {
     openCraftMenu("smithing")
+})
+
+button4.addEventListener("click", () => {
+    testDamage()
 })
 
 

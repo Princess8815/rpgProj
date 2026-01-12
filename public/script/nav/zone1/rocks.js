@@ -13,7 +13,7 @@ export function addRocks() {
     rawRuneStones: ["1_0"],
     pureRuneStones: ["-1_-1"],
     // starter area
-    tinOre: ["2_0", "4_3", "6_5"],
+    tinOre: ["1_1", "4_3", "6_5"],
     copperOre: ["3_2", "5_4", "7_6"],
 
     // early game

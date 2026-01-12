@@ -67,6 +67,7 @@ body {
   gap: 0.5rem !important;
   width: 100% !important;
   align-items: start;
+  
 }
 
 /* FORCE each item to behave like a normal grid item */
@@ -75,6 +76,7 @@ body {
   max-width: 100% !important;
   grid-column: auto !important;   /* prevents accidental full-row spanning */
   box-sizing: border-box;
+  
 }
 
 .stat-item span:first-child {
@@ -85,6 +87,7 @@ body {
 
 #skillInfo {
   margin: 5px;
+  
 }
 
 
@@ -94,6 +97,7 @@ body {
   grid-template-columns: repeat(3, 1fr) !important;
   gap: 0.5rem !important;
   width: 100% !important;
+  
 }
 
 /* hard force each stat item to be one grid cell */
@@ -151,15 +155,15 @@ body {
 }
 
 #contextMenu {
-    position: fixed;   /* 🔑 NOT absolute */
+    position: fixed;   
     z-index: 1000;
     background: #0c1314;
     cursor: pointer;
 }
 
-.hidden {
+/* .hidden {
   display: none;
-}
+} */
 
 .menu-item:hover {
   background: #06b9d4;

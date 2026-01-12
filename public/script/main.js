@@ -13,6 +13,7 @@ import "./skills/allStats.js"
 import "./nav/coordsMap.js"
 import "./skills/skillIntervals.js"
 
+
 import { saveIfVersionChanged } from "./saveData/saveOrLoadData.js"
 import { gameState } from "./saveData/saveOrLoadData.js"
 

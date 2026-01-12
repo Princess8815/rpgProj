@@ -2,6 +2,8 @@ import { map } from "./coordsMap.js";
 import { gameState, savePlayerData } from "../saveData/saveOrLoadData.js";
 import { updateCoords, updateAreaAndCheckSurroundings } from "../movement/move.js";
 import { changeScreen } from "./navMenu.js";
+import { openCraftMenu } from "../skills/crafting/crafterMenu.js";
+import { logger } from "../main.js";
 
 export function mapGenerater() {
     const town = document.getElementById("townList")
@@ -56,6 +58,7 @@ export function showCityDetails(city, fullDetails = false) {
     info.textContent = "";
     basic.innerHTML = "";
     full.innerHTML = "";
+    back.innerHTML = "";
 
 
     header.textContent = city.name
@@ -75,6 +78,10 @@ export function showCityDetails(city, fullDetails = false) {
                 btn.addEventListener("click", () => {
                     document.getElementById("cityDetails").style.display = "block";
                     changeScreen("home");
+                    switch (key) {
+                        case "forge":
+                            openCraftMenu("smithing")
+                    }
                     //logic later
             })
             full.appendChild(btn)

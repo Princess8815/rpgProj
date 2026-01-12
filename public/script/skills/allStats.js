@@ -57,7 +57,7 @@ setInterval(() => {
     }
 
     const tool = allItems[gameState.player.inventory.equipment.tool]
-    if (!tool || tool.type != action.tool) {
+    if (action.tool != "none" && (tool && tool.type != action.tool)) {
         logger(`you need a ${action.tool} to do that`)
         gameState.player.action = null
         return;
@@ -70,9 +70,12 @@ setInterval(() => {
         gameState.player.action = null
         return
     }
+    let gather = 1
     
     const stats = allStats();
-    const gather = stats.gatherPower //will not be null at this point all tools have gather power
+    if (action.tool != "none") {
+        gather = stats.gatherPower
+    }
 
     
     

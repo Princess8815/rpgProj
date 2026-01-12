@@ -4,7 +4,7 @@ import { savePlayerData, gameState } from "../saveData/saveOrLoadData.js";
 import { updateMyLivePosition, watchNearbyPlayers } from "../saveData/realtime.js";
 import { getChunkKey } from "../utilities/chunk.js";
 import { syncPlayer, handleNearbyPlayers } from "../login/auth.js";
-import { findLocationAt, map } from "../nav/coordsMap.js";
+import { findLocationsAt, map } from "../nav/coordsMap.js";
 import { autoSavePlayer } from "../saveData/saveOrLoadData.js";
 import { showCityDetails } from "../nav/generateMap.js";
 import { addResetCheckSkill } from "../skills/updateMenu.js";
@@ -26,72 +26,96 @@ export function updateCoords(){
     }
   }
 
-  let loc = findLocationAt(gameState.player.location.x, gameState.player.location.y, gameState.player.location.z)
+  let loc = findLocationsAt(gameState.player.location.x, gameState.player.location.y, gameState.player.location.z)
   if (!loc) {
     loc = {name: "empty"}
   }
 
-  coords.textContent = `x: ${gameState.player.location.x} y: ${gameState.player.location.y} z: ${gameState.player.location.z} loc: ${loc.name}`
+  coords.textContent = `x: ${gameState.player.location.x} y: ${gameState.player.location.y} z: ${gameState.player.location.z}`
 }
 
 export function updateAreaAndCheckSurroundings(coords) {
-    const current = findLocationAt(coords.x, coords.y, coords.z)
-    const north = findLocationAt(coords.x + 1, coords.y, coords.z)
-    const south = findLocationAt(coords.x - 1, coords.y, coords.z)
-    const west = findLocationAt(coords.x, coords.y, coords.z + 1)
-    const east = findLocationAt(coords.x, coords.y, coords.z - 1)
+    const current = findLocationsAt(coords.x, coords.y, coords.z)
+    const north = findLocationsAt(coords.x + 1, coords.y, coords.z)
+    const south = findLocationsAt(coords.x - 1, coords.y, coords.z)
+    const west = findLocationsAt(coords.x, coords.y, coords.z + 1)
+    const east = findLocationsAt(coords.x, coords.y, coords.z - 1)
 
     const area = document.getElementById("areaView")
     area.innerHTML = ""
 
     const areaName = document.createElement("h3")
-    const areaType = document.createElement("h4")
-    const areaActionButton = document.createElement("button")
+    const buttonRow = document.createElement("div")
+    
     if (current) {
-        areaName.textContent = current.name
-        area.appendChild(areaName)
-        areaType.textContent = current.type
-        area.appendChild(areaType)
-        switch (current.type) {
-            case "town":
-                areaActionButton.textContent = "enter town"
-                areaActionButton.addEventListener("click", () => {
-                    showCityDetails(current, true)
-                })
-                area.appendChild(areaActionButton)
-                break
-            case "resource":
-                areaActionButton.textContent = "gather from " + current.name
-                areaActionButton.addEventListener("click", () => {
-                    const currentLevel = gameState.player.stats[current.skill].level
-                    if (currentLevel < current.level) {
-                        logger(`you need a ${current.skill} level of ${current.level} to do that`)
-                        return
-                    }
+        let text = ""
+        let townName = ""
+        for (const area of current) {
+            if(text === ""){
+                text = area.name
+            }
+            else {
+                text = "multiple"
+            }
+            if (area.type === "town"){
+                townName = area.name
+            }
+            const areaActionButton = document.createElement("button")
 
-                    if (!gameState.player.action) {
-                        const health = current.health
-                        gameState.player.action = {
-                            ...current,
-                            maxHealth: health
+            switch (area.type) {
+                case "town":
+                    areaActionButton.textContent = "enter town"
+                    areaActionButton.addEventListener("click", () => {
+                        showCityDetails(area, true)
+                    })
+                    buttonRow.appendChild(areaActionButton)
+                    break
+                case "resource":
+                    areaActionButton.textContent = "gather from " + area.name
+                    areaActionButton.addEventListener("click", () => {
+                        addResetCheckSkill(area.skill)
+                        const currentLevel = gameState.player.stats[area.skill].level
+                        if (currentLevel < current.level) {
+                            logger(`you need a ${area.skill} level of ${area.level} to do that`)
+                            return
                         }
-                    }
-                    else {
-                        gameState.player.action = null
-                    }
-                    console.log("gathered")
-                })
-                area.appendChild(areaActionButton)
 
-
+                        if (!gameState.player.action) {
+                            const health = area.health
+                            gameState.player.action = {
+                                ...area,
+                                maxHealth: health
+                            }
+                        }
+                        else {
+                            gameState.player.action = null
+                        }
+                    })
+                    buttonRow.appendChild(areaActionButton)
+            }
+            
         }
+
+        const name = townName || text;
+        areaName.textContent = name
+        area.appendChild(areaName)
+
+        area.appendChild(buttonRow)
+
 
     }
     else {
         areaName.textContent = "nothing of interest"
         area.appendChild(areaName)
-        areaType.textContent = "tame wilds"
-        area.appendChild(areaType)
+
+        const build = document.createElement("button")
+        build.textContent = "build (comming soon)"
+        build.addEventListener("click", () => {
+            logger("cant you read it says comming soon")
+        })
+
+        area.appendChild(build)
+
     }
 
     return {

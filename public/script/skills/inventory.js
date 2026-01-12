@@ -4,6 +4,7 @@ import { capitalizeAfterSpaces, parseStack } from "../utilities/textFormat.js";
 import { getItemKey } from "../utilities/getKey.js";
 import { addResetCheckSkill } from "./updateMenu.js";
 import { logger } from "../main.js";
+import { openCraftMenu } from "./crafting/crafterMenu.js";
 
 
 export function updateInventory() {
@@ -139,6 +140,12 @@ function runDouble(param, item, quantity) {
     switch (param) {
         case "equip":
             equip(item, quantity)
+            break
+        case "fletching":
+        case "crafting":
+            openCraftMenu(param)
+
+        
     }
 }
 
@@ -216,7 +223,7 @@ const equipMap = {
 
 export function equip(item = null, quantity = 1) {
     //trust item.slot always matches equipslot useSkill always skill useLevel always level all are always on equipables equip only ran from its item
-    let equip = gameState.player.inventory.equipment
+    let equipment = gameState.player.inventory.equipment
     const equipDoc = document.getElementById("equipmentGrid")
     equipDoc.innerHTML = ""
     const ammoDoc = document.createElement("div")
@@ -229,8 +236,8 @@ export function equip(item = null, quantity = 1) {
     equipDoc.appendChild(ammoDoc)
     const equipSlots = ["helmet", "chest", "legs", "boots", "gloves", "necklace", "ring", "mainhand", "offhand", "tool"]
     if (item) {
-        if (!equip || typeof equip != "object" ||  Object.keys(equip).length === 0) {
-            equip = gameState.player.inventory.equipment = {};
+        if (!equipment || typeof equipment != "object" ||  Object.keys(equipment).length === 0) {
+            equipment = gameState.player.inventory.equipment = {};
         }
 
         const itemSlotType = item.slot
@@ -245,15 +252,30 @@ export function equip(item = null, quantity = 1) {
 
 
             if (currentReqSkill >= item.useLevel) { //
-                //todo handle stackable ammo
-                if (!equip[itemSlotType]) {
+                if (item.twoHanded && equipment.offhand) {
+                    logger("you need both hands free to equip that")
+                    equip()
+                    return 
+                }
+                if (itemSlotType === "offhand" && equipment.mainhand) {
+                    const mainhand = parseStack(equipment.mainhand)
+                    const mainItem = allItems[mainhand.key]
+                    if (mainItem.twoHanded) {
+                        logger("you are carrying a really heavy weapon you arent a super hero")
+                        logger("even if you can carry thousands of pounds in yoyr inventory")
+                        equip()
+                        return
+                    }
+
+                }
+                if (!equipment[itemSlotType]) {
                     removeItem(item)
-                    equip[itemSlotType] = equipKey
+                    equipment[itemSlotType] = equipKey
                 }
                 else {
-                const equippedKey = equip[itemSlotType]
+                const equippedKey = equipment[itemSlotType]
                     removeItem(item);
-                    equip[itemSlotType] = equipKey
+                    equipment[itemSlotType] = equipKey
                     addItem(equippedKey)
                     
                 }
@@ -271,8 +293,8 @@ export function equip(item = null, quantity = 1) {
     el.style.gridColumn = pos.c;
     el.style.gridRow = pos.r;
 
-    if (equip[slot]) {
-        el.textContent = allItems[equip[slot]].name;
+    if (equipment[slot]) {
+        el.textContent = allItems[equipment[slot]].name;
         el.addEventListener("click", () => unEquip(slot));
     } else {
         el.textContent = slot;

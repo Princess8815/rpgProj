@@ -110,3 +110,5 @@ export const smithingBars = {
     craftXp: 150
   }
 };
+
+

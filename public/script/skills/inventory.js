@@ -8,6 +8,8 @@ import { openCraftMenu } from "./crafting/crafterMenu.js";
 
 const INVENTORY_SLOTS = 28;
 
+console.log("im in test");
+
 export function updateInventory() {
     console.log("update inv ran");
 

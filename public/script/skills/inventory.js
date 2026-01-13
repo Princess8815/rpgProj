@@ -260,29 +260,58 @@ export function equip(item = null, quantity = 1) {
     autoSavePlayer();
 }
 
+function normalizeEquipmentEntry(slot, entry) {
+    if (typeof entry !== "string") return null;
+    const { key } = parseStack(entry);
+    if (!key) return null;
+    const itemDef = allItems[key];
+    if (!itemDef || itemDef.slot !== slot) return null;
+    return key;
+}
+
 function normalizeEquipmentState() {
     const equipment = gameState.player.inventory?.equipment;
     if (!equipment || typeof equipment !== "object") return;
 
-    const mainhandEntry = equipment.mainhand;
-    const offhandEntry = equipment.offhand;
+    const normalized = {};
 
-    if (typeof mainhandEntry !== "string" || typeof offhandEntry !== "string") return;
+    for (const slot of Object.keys(equipMap)) {
+        if (slot === "ammo") continue;
+        const normalizedEntry = normalizeEquipmentEntry(slot, equipment[slot]);
+        if (normalizedEntry) {
+            normalized[slot] = normalizedEntry;
+        }
+    }
 
-    const { key: mainhandKey } = parseStack(mainhandEntry);
+    const ammo = equipment.ammo;
+    if (
+        ammo &&
+        typeof ammo === "object" &&
+        typeof ammo.ammoItem === "string" &&
+        allItems[ammo.ammoItem]
+    ) {
+        normalized.ammo = { ...ammo };
+    }
+
+    gameState.player.inventory.equipment = normalized;
+
+    const mainhandKey = normalized.mainhand;
+    const offhandKey = normalized.offhand;
+
+    if (!mainhandKey || !offhandKey) return;
+
     const mainhandItem = allItems[mainhandKey];
     if (!mainhandItem?.twoHanded) return;
 
-    const { key: offhandKey, qty: offhandQty } = parseStack(offhandEntry);
     if (inventoryHasItem(offhandKey)) {
-        delete equipment.offhand;
+        delete normalized.offhand;
         logger("your offhand was unequipped because your mainhand requires two hands");
         return;
     }
 
-    const moved = addItem(offhandKey, offhandQty ?? 1);
+    const moved = addItem(offhandKey, 1);
     if (moved) {
-        delete equipment.offhand;
+        delete normalized.offhand;
         logger("your offhand was unequipped because your mainhand requires two hands");
     } else {
         logger("inventory is too full to unequip your offhand");

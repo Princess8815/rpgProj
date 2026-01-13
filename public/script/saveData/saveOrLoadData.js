@@ -43,7 +43,7 @@ export async function savePlayerData(playerData) {
 
   const ref = doc(db, "players", user.uid);
 
-  await setDoc(ref, playerData, { merge: true });
+  await setDoc(ref, playerData);
   console.log(`saves ${gameState.player.saves}`)
 }
 
@@ -106,5 +106,4 @@ export function saveIfVersionChanged() {
     
     savePlayerData(gameState.player)
 }
-
 

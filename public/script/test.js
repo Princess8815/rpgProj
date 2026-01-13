@@ -6,7 +6,10 @@ import { savePlayerData, gameState } from "./saveData/saveOrLoadData.js";
 import { allStats, getIncDecHp } from "./skills/allStats.js";
 import { updateInventory, addItem, addOrRemoveAmmo } from "./skills/inventory.js";
 import { openCraftMenu } from "./skills/crafting/crafterMenu.js";
-import { testDamage } from "./combat/damage.js";
+import { testDamage, damage } from "./combat/damage.js";
+import { normalizePlayerStats } from "./combat/normalizePlayer.js";
+import { basicMonsters } from "./items/resourceNodes/monsters/basicMonster.js";
+import { logger } from "./main.js";
 
 
 
@@ -41,7 +44,17 @@ button3.addEventListener("click", () => {
 })
 
 button4.addEventListener("click", () => {
-    testDamage()
+    //testDamage()
+    //addResetCheckSkill("hp", "resetAll") 
+    const playerStats = normalizePlayerStats("melee")
+    const monsterStats = basicMonsters.level1Rat.stat
+    const monsterSkills = basicMonsters.level1Rat.skills
+
+    const result = damage(playerStats.stats, monsterStats, playerStats.skills, monsterSkills)
+    const result2 = damage(monsterStats, playerStats.stats, monsterSkills, playerStats.skills)
+
+    logger(`mine ${result.damage}`)
+    logger(`rats ${result2.damage}`)
 })
 
 

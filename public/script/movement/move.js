@@ -11,6 +11,9 @@ import { addResetCheckSkill } from "../skills/updateMenu.js";
 import { logger } from "../main.js";
 import { addItem } from "../skills/inventory.js";
 import { getOrSetEnergy } from "../skills/exploration/energy.js";
+import { parseStack } from "../utilities/textFormat.js";
+import { allItems } from "../items/itemIndex.js";
+import { normalizePlayerStats } from "../combat/normalizePlayer.js";
 
 console.log("move ran");
 
@@ -34,7 +37,7 @@ export function updateCoords(){
   coords.textContent = `x: ${gameState.player.location.x} y: ${gameState.player.location.y} z: ${gameState.player.location.z}`
 }
 
-export function updateAreaAndCheckSurroundings(coords) {
+export function updateAreaAndCheckSurroundings(coords, mode = "scan") {
     const current = findLocationsAt(coords.x, coords.y, coords.z)
     const north = findLocationsAt(coords.x + 1, coords.y, coords.z)
     const south = findLocationsAt(coords.x - 1, coords.y, coords.z)
@@ -94,8 +97,8 @@ export function updateAreaAndCheckSurroundings(coords) {
                     buttonRow.appendChild(areaActionButton)
                     break;
                 case "monster":
-                    if (area.aggressive) {
-                        
+                    if (area.aggressive && mode === "enter") {
+                        startCombat(area)
                     }
             }
             
@@ -142,7 +145,7 @@ document.querySelectorAll(".move-btn").forEach(btn => {
 
 function move (direction) {
     const now = Date.now();
-    gameState.player.action = null
+    
     if (!gameState.player.lastMove){
         gameState.player.lastMove = now
     }
@@ -163,6 +166,7 @@ function move (direction) {
     console.warn("Game not ready yet");
     return;
   }
+  gameState.player.action = null
   const explorationXpAmount = addResetCheckSkill("exploration") + 10
   getOrSetEnergy("dec", 1)
   addResetCheckSkill("exploration", "add", explorationXpAmount)
@@ -197,7 +201,7 @@ function move (direction) {
 
   updateMyLivePosition(uid)
 
-  updateAreaAndCheckSurroundings(gameState.player.location) //ran twice once is to get surroundings to verify other to set area
+  updateAreaAndCheckSurroundings(gameState.player.location, "enter") //ran twice once is to get surroundings to verify other to set area
 
 
   const newChunk = getChunkKey(
@@ -218,4 +222,45 @@ function move (direction) {
     
     
   }
+}
+
+export function startCombat(monster) {
+    let type =  "melee"
+    let xpType = "balanced"
+
+    if (gameState.player.inventory.equipment.mainhand) {
+        const equipObj = allItems[parseStack(gameState.player.inventory.equipment.mainhand).key]
+        type = equipObj?.type ?? "melee"
+    }
+
+    switch (type) {
+        case "melee":
+            xpType = gameState.player.combatXp.melee
+            break
+        case "ranged":
+            xpType = gameState.player.combatXp.ranged
+            break
+        case "magic":
+            xpType = gameState.player.combatXp.magic
+            break
+    }
+
+    const player = normalizePlayerStats(type)
+    const monsterStats = monster.stats
+    const monsterSkills = monster.skills
+
+    gameState.player.action = {
+        combat: {
+            playerStats: player.stats,
+            playerSkills: player.skills,
+            playerXpType: xpType, //used for xp and easier abstraction
+
+            enemy: {...monster},
+
+            enemySpeed: monsterStats.attackSpeed,
+            playerSpeed: player.stats.attackSpeed
+        }
+    }
+
+
 }

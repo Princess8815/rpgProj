@@ -1,12 +1,14 @@
-import { gameState } from "../saveData/saveOrLoadData";
+import { gameState } from "../saveData/saveOrLoadData.js";
+import { addResetCheckSkill } from "../skills/updateMenu.js";
+import { allStats } from "../skills/allStats.js";
 
-export function normalizePlayerStats() {
+export function normalizePlayerStats(type = "melee") {
     const stats = {
-        accuracy: 0,
+        type: type,
+        accuracy: 10,
 
-        accuracy: 0,
         strengthBonus: 0,
-        defense: 0,
+        defense: 10,
 
         meleeAffinity: 0,
         rangeAffinity: 0,
@@ -17,5 +19,25 @@ export function normalizePlayerStats() {
         accuracyMultiplier: 1,
         damageMultiplier: 1,
         defenseMultiplier: 1,
+    }
+
+    const skills = {
+        attack: addResetCheckSkill("attack"),
+        strength: addResetCheckSkill("strength"),
+        defense: addResetCheckSkill("defense"),
+        ranged: addResetCheckSkill("ranged"),
+        magic: addResetCheckSkill("magic"),
+    }
+
+    const fullStats = {
+        ...stats,
+        ...allStats()
+        
+    }
+    console.log(stats)
+    console.log(skills)
+    return {
+        stats: fullStats,
+        skills: skills
     }
 }

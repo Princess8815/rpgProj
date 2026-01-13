@@ -5,6 +5,9 @@ import { logger } from "../main.js";
 import { addResetCheckSkill } from "./updateMenu.js";
 import { addItem, removeAndCraft } from "./inventory.js";
 import { teleport } from "../nav/generateMap.js";
+import { findLocationsAt } from "../nav/coordsMap.js";
+import { damage } from "../combat/damage.js";
+import { lootTables } from "../combat/lootTables/lootIndex.js";
 
 
 export function allStats(){
@@ -39,7 +42,7 @@ export function allStats(){
     }
 
 
-    //logger(`${log} ${stats.gatherPower} skills/allStats allStats`)
+    //logger(`${log} skills/allStats allStats`)
     return stats
 }
 
@@ -52,6 +55,12 @@ setInterval(() => {
 
     if (action.craft) {
         craft(action)
+        actionDisplay()
+        return
+    }
+
+    if (action.combat) {
+        initCombat(action)
         actionDisplay()
         return
     }
@@ -120,6 +129,15 @@ export function actionDisplay(){
         actionEl.style.background = "#8E44AD"
         return;
     }
+        if (action.combat) {
+        const health = action.combat.enemy.stats.health
+        const max = action.combat.enemy.stats.maxHealth
+        const percent = (health / max) * 100;
+        actionEl.textContent = `${health}/${max}`
+        actionEl.style.width = `${percent}%`
+        actionEl.style.background = "#f70606ff"
+        return;
+    }
 
     const health = action.health
     const maxHealth = action.maxHealth
@@ -128,6 +146,46 @@ export function actionDisplay(){
     actionEl.style.width = `${percent}%`
     actionEl.style.background = "#A97142"
 
+}
+
+function initCombat(action){
+    gameState.player.action.combat.playerSpeed--
+    gameState.player.action.combat.enemySpeed--
+    logger(`my attack ${gameState.player.action.combat.playerSpeed} monsters attack ${gameState.player.action.combat.enemySpeed}`)
+    let prayer = null
+    let enemyPrayer = null
+
+    if (gameState.player.prayers) {
+        prayer = gameState.player.prayers
+    }
+
+    if (action.combat.enemy.prayers) {
+        enemyPrayer = action.combat.enemy.prayers
+    }
+
+    const playerStats = action.combat.playerStats
+    const playerSkills = action.combat.playerSkills
+
+    const enemyStats = action.combat.enemy.stats
+    const enemySkills = action.combat.enemy.skills
+
+    if (gameState.player.action.combat.enemySpeed <= 0) {
+        console.log(enemyStats)
+        console.log(playerStats)
+        const damageInflicted = damage(enemyStats, playerStats, enemySkills, playerSkills, enemyPrayer, prayer )
+        gameState.player.action.combat.enemySpeed = gameState.player.action.combat.enemy.stats.attackSpeed
+        getIncDecHp("remove", damageInflicted.damage)
+        logger(`monster damage ${damageInflicted.damage} hit chance ${damageInflicted.hitChance} max ${damageInflicted.maxHit}`)
+    }
+        if (gameState.player.action.combat.playerSpeed <= 0) {
+        const damageInflicted = damage(playerStats, enemyStats, playerSkills, enemySkills, prayer, enemyPrayer )
+        gameState.player.action.combat.playerSpeed = gameState.player.action.combat.playerStats.attackSpeed
+        gameState.player.action.combat.enemy.stats.health -= damageInflicted.damage
+        if (gameState.player.action.combat.enemy.stats.health <= 0) {
+            lootTables(action.combat.enemy.loot)
+            gameState.player.action.combat.enemy.stats.health = gameState.player.action.combat.enemy.stats.maxHealth
+        }
+    }
 }
 
 function craft(action) {
@@ -184,17 +242,29 @@ function craft(action) {
 // },
 
 
-export function getIncDecHp(mode = "get", amount) {
+export function getIncDecHp(mode = "get", amount = 0) {
       if (!gameState?.player) {
     setTimeout(() => getIncDecHp(), 500)
     return
-  }
+    }
+    const stats = allStats()
+
+    
+
+    if (typeof gameState.player.stats?.hp != "object") {
+        gameState.player.stats.hp = {xp: 0, level: 1, nextXp: 83, diff: 83}
+    }
+
     const playerHpLevel = addResetCheckSkill("hp")
+
+    if (playerHpLevel < 10) {
+        addResetCheckSkill("hp", "set", 1122)
+    }
 
     let addedHealth = 0
 
-    if (gameState.player?.stats?.healthBoost) {
-        addedHealth = gameState.player.stats.healthBoost
+    if (stats.healthBoost) {
+        addedHealth = stats.healthBoost
     }
 
     const max = gameState.player.maxHealth = playerHpLevel * 10 + addedHealth
@@ -204,6 +274,10 @@ export function getIncDecHp(mode = "get", amount) {
     const health = gameState.player.health
     if (!gameState.player.respawn) {
         gameState.player.respawn = {x: 0, y: 100, z: 0}
+    }
+
+    if (health >= max) {
+        gameState.player.health = max
     }
 
     switch (mode) {
@@ -239,4 +313,16 @@ export function getIncDecHp(mode = "get", amount) {
 }
 
 getIncDecHp()
+
+setInterval(() => {
+    if (!gameState.player) return
+    const locArray = findLocationsAt(gameState.player.location.x, gameState.player.location.y, gameState.player.location.z,)
+    for (const loc of locArray) {
+        if (loc.type === "town") {
+            getIncDecHp("add", 5)
+            break;
+        }
+    }
+    
+}, 1000)
 

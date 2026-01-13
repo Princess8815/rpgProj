@@ -20,8 +20,15 @@ export const emptyGameState = {
   position: {},
   inventory: {},
   equipment: {},
+  stats: {},
+  combatXp: {
+    melee: "balanced",
+    ranged: "balanced",
+    magic: "balanced"
+  },
   version: 1,
-  savedVersion: 1
+  savedVersion: 1,
+  saves: 0 //using to track saves
 };
 
 
@@ -29,6 +36,7 @@ export async function savePlayerData(playerData) {
     console.log("saved" + " " + gameState.player.version + " " + gameState.player.savedVersion)
 
     gameState.player.savedVersion = gameState.player.version
+    gameState.player.saves++
 
   const user = auth.currentUser;
   if (!user) throw new Error("Not logged in");
@@ -36,6 +44,7 @@ export async function savePlayerData(playerData) {
   const ref = doc(db, "players", user.uid);
 
   await setDoc(ref, playerData, { merge: true });
+  console.log(`saves ${gameState.player.saves}`)
 }
 
 export async function loadPlayerData() {

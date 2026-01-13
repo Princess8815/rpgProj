@@ -2,6 +2,7 @@ import { auth, db } from "../firebase.js";
 import { savePlayerData, gameState } from "../saveData/saveOrLoadData.js";
 import { autoSavePlayer } from "../saveData/saveOrLoadData.js";
 import { logger } from "../main.js";
+import { getOrSetEnergy } from "./exploration/energy.js";
 
 export const skillsInGame = {
   attack: { name: "Attack"},
@@ -74,10 +75,21 @@ export function UpdateSkillMenu() {
 
 
 export function updateSkillsLogic() {
+    if (!gameState.player) {
+        setTimeout(() => {
+            updateSkillsLogic();
+            return
+        }, 1000)
+    }
     Object.entries(skillsInGame).forEach(([key, value]) => {
         let level = gameState.player.stats?.[key]?.level ?? 1
         const xp = gameState.player.stats?.[key]?.xp ?? 0
         let nextXp = gameState.player.stats?.[key]?.nextXp ?? 83
+
+        if (typeof gameState.player.stats[key] !== "object") {
+            gameState.player.stats[key] = { xp: 0, level: 1, nextXp: 83, diff: 83 }
+        }
+
 
         while (xp >= nextXp) {
             level = gameState.player.stats?.[key]?.level ?? 1
@@ -88,6 +100,7 @@ export function updateSkillsLogic() {
             gameState.player.stats[key].diff = Math.round(diff * 1.1)
             gameState.player.stats[key].nextXp += gameState.player.stats[key].diff
             nextXp = gameState.player.stats[key].nextXp //adjusted for the while loop
+            getOrSetEnergy("set") //yes this is intended any level up will reset energy
         }
     })
     autoSavePlayer();
@@ -96,6 +109,9 @@ export function updateSkillsLogic() {
 export function addResetCheckSkill(skill, mode = "get", amount = 0) {
     //logger(`${skill} ${mode} ${amount}`, "pink")
     let level = gameState.player.stats?.[skill]?.level ?? 1
+    if (!gameState.player.stats) {
+        gameState.player.stats = {}
+    }
     if (!gameState.player.stats[skill]) {
         gameState.player.stats[skill] = { xp: 0, level: 1, nextXp: 83, diff: 83 }
     }
@@ -110,13 +126,23 @@ export function addResetCheckSkill(skill, mode = "get", amount = 0) {
             level = gameState.player.stats[skill].level
             return level
         case "reset": //troubleshooting or rare occurrences but def needed
-            gameState.player.stats[skill].xp = 0
-            gameState.player.stats[skill].level = 1
-            gameState.player.stats[skill].diff = 83
-            gameState.player.stats[skill].nextXp = 83
+            delete gameState.player.stats[skill]
+            addResetCheckSkill(skill)
             updateSkillsLogic();
             UpdateSkillMenu();
             break
+        case "resetAll":
+            delete gameState.player.stats
+            gameState.player.stats = {}
+            updateSkillsLogic();
+            UpdateSkillMenu();
+            break;
+        case "set":
+            gameState.player.stats[skill].xp = amount
+            updateSkillsLogic();
+            UpdateSkillMenu();
+            break
+
             
     }
     autoSavePlayer()

@@ -5,10 +5,10 @@ import { getItemKey } from "../utilities/getKey.js";
 import { addResetCheckSkill } from "./updateMenu.js";
 import { logger } from "../main.js";
 import { openCraftMenu } from "./crafting/crafterMenu.js";
+import { allStats } from "./allStats.js";
+import { getIncDecHp } from "./allStats.js";
 
 const INVENTORY_SLOTS = 28;
-
-console.log("im in test");
 
 export function updateInventory() {
     console.log("update inv ran");
@@ -198,8 +198,13 @@ const equipMap = {
 };
 
 export function equip(item = null, quantity = 1) {
+    if (gameState.player?.action?.combat) {
+        logger("you cant do that in combat")
+        return
+    }
     // Trust: item.slot matches equipment slot; equip is only called for equippable items.
     let equipment = gameState.player.inventory.equipment;
+    getIncDecHp()
 
     if (!item) {
         normalizeEquipmentState();
@@ -344,6 +349,7 @@ function unEquip(slot) {
     }
 
     console.log("inventory is to full to equip that");
+    getIncDecHp();
     autoSavePlayer();
     return false;
 }

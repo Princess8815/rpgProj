@@ -4,9 +4,10 @@ import { addResetCheckSkill } from "../updateMenu.js";
 export function getOrSetEnergy(mode = "get", amount = 1) {
     const explorationLevel = addResetCheckSkill("exploration")
 
-    if (gameState.player.energy === null){
+    if (gameState.player.energy === null || gameState.player.energy > explorationLevel){
         gameState.player.energy = explorationLevel
     }
+    
 
     switch (mode) { 
         case "set":

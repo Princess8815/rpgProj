@@ -8,7 +8,7 @@ export const basicMonsters = {
         combatLevel: 1,
         aggressive: true,
         loot: "ratDrop",
-        stat: {
+        stats: {
               type: "melee",
 
                 accuracy: 3,
@@ -20,7 +20,8 @@ export const basicMonsters = {
                 magicAffinity: -1,
 
                 attackSpeed: 3,
-                healthBoost: 6,
+                health: 60,
+                maxHealth: 60,
 
                 accuracyMultiplier: 1,
                 damageMultiplier: 1,

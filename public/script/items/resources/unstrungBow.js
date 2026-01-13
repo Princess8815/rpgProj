@@ -2,14 +2,21 @@
 export const fletchingMaterials = {
   cotton: {
     name: "Cotton",
-    dbl: "none",
+    dbl: "fletching",
+    stackable: true,
+    craftable: false
+  },
+
+feather: {
+    name: "Feather",
+    dbl: "fletching",
     stackable: true,
     craftable: false
   },
 
   bowString: {
     name: "Bow String",
-    dbl: "none",
+    dbl: "fletching",
     stackable: true,
     craftable: true,
     craftSkill: "fletching",
@@ -18,6 +25,19 @@ export const fletchingMaterials = {
       cotton: 2
     },
     craftXp: 5
+  },
+  headlessArrow: {
+    name: "Headless Arrows",
+    dbl: "fletching",
+    stackable: true,
+    craftable: true,
+    craftSkill: "fletching",
+    craftLevel: 1,
+    recipe: {
+      normalLog: 1
+    },
+    craftXp: 5,
+    craftAmount: 15
   }
 };
 

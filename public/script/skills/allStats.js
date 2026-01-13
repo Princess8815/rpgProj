@@ -151,7 +151,7 @@ export function actionDisplay(){
 function initCombat(action){
     gameState.player.action.combat.playerSpeed--
     gameState.player.action.combat.enemySpeed--
-    logger(`my attack ${gameState.player.action.combat.playerSpeed} monsters attack ${gameState.player.action.combat.enemySpeed}`)
+    //logger(`my attack ${gameState.player.action.combat.playerSpeed} monsters attack ${gameState.player.action.combat.enemySpeed}`)
     let prayer = null
     let enemyPrayer = null
 
@@ -169,22 +169,71 @@ function initCombat(action){
     const enemyStats = action.combat.enemy.stats
     const enemySkills = action.combat.enemy.skills
 
+    //logger(`type ${action.combat.playerXpType}`)
+    console.log(action)
+
+
+
     if (gameState.player.action.combat.enemySpeed <= 0) {
         console.log(enemyStats)
         console.log(playerStats)
         const damageInflicted = damage(enemyStats, playerStats, enemySkills, playerSkills, enemyPrayer, prayer )
         gameState.player.action.combat.enemySpeed = gameState.player.action.combat.enemy.stats.attackSpeed
         getIncDecHp("remove", damageInflicted.damage)
-        logger(`monster damage ${damageInflicted.damage} hit chance ${damageInflicted.hitChance} max ${damageInflicted.maxHit}`)
+        
     }
-        if (gameState.player.action.combat.playerSpeed <= 0) {
+    if (gameState.player.action.combat.playerSpeed <= 0) {
         const damageInflicted = damage(playerStats, enemyStats, playerSkills, enemySkills, prayer, enemyPrayer )
+        awardCombatXp(damageInflicted.damage, playerStats.type, action.combat.playerXpType)
+        switch (playerStats.type) {
+            case "ranged":
+                if (!gameState.player.inventory.equipment.ammo) {
+                    damageInflicted.damage = 0,
+                    logger("you need ammo to do that")
+                }
+        }
+
+
         gameState.player.action.combat.playerSpeed = gameState.player.action.combat.playerStats.attackSpeed
         gameState.player.action.combat.enemy.stats.health -= damageInflicted.damage
         if (gameState.player.action.combat.enemy.stats.health <= 0) {
             lootTables(action.combat.enemy.loot)
             gameState.player.action.combat.enemy.stats.health = gameState.player.action.combat.enemy.stats.maxHealth
         }
+    }
+}
+
+function awardCombatXp(damage, type, xpType) {
+    switch (type) {
+        case "melee":
+            if (xpType === "balanced") {
+                addResetCheckSkill("attack", "add", damage)
+                addResetCheckSkill("strength", "add", damage)
+                addResetCheckSkill("defense", "add", damage)
+                addResetCheckSkill("hp", "add", damage)
+                break
+            }
+        case "ranged":
+            if (xpType === "balanced") {
+                const rangedXpAmount = Math.floor(damage * 1.5)
+                addResetCheckSkill("range", "add", rangedXpAmount)
+                addResetCheckSkill("defense", "add", rangedXpAmount)
+                addResetCheckSkill("hp", "add", damage)
+                break
+            }
+        case "magic":
+            if (xpType === "balanced") {
+                const xpAmount = Math.floor(damage * 1.5)
+                addResetCheckSkill("magic", "add", xpAmount)
+                addResetCheckSkill("defense", "add", xpAmount)
+                addResetCheckSkill("hp", "add", damage)
+                break
+            }
+    }
+    if (xpType != "balanced") {
+        const totalXp = damage * 3
+        addResetCheckSkill(xpType, "add", totalXp)
+        addResetCheckSkill("hp", "add", damage)
     }
 }
 

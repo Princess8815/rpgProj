@@ -5,10 +5,10 @@ import { allStats } from "../skills/allStats.js";
 export function normalizePlayerStats(type = "melee") {
     const stats = {
         type: type,
-        accuracy: 10,
+        accuracy: 100,
 
         strengthBonus: 0,
-        defense: 10,
+        defense: 100,
 
         meleeAffinity: 0,
         rangeAffinity: 0,
@@ -25,7 +25,7 @@ export function normalizePlayerStats(type = "melee") {
         attack: addResetCheckSkill("attack"),
         strength: addResetCheckSkill("strength"),
         defense: addResetCheckSkill("defense"),
-        ranged: addResetCheckSkill("ranged"),
+        ranged: addResetCheckSkill("range"),
         magic: addResetCheckSkill("magic"),
     }
 

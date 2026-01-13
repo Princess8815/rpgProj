@@ -204,7 +204,7 @@ export function equip(item = null, quantity = 1) {
     }
     // Trust: item.slot matches equipment slot; equip is only called for equippable items.
     let equipment = gameState.player.inventory.equipment;
-    getIncDecHp()
+    
 
     if (!item) {
         normalizeEquipmentState();
@@ -255,7 +255,7 @@ export function equip(item = null, quantity = 1) {
             }
         }
     }
-
+    getIncDecHp()
     RenderEquip();
     autoSavePlayer();
 }

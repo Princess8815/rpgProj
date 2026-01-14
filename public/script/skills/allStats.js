@@ -3,7 +3,7 @@ import { allItems } from "../items/itemIndex.js";
 import { parseStack } from "../utilities/textFormat.js";
 import { logger } from "../main.js";
 import { addResetCheckSkill } from "./updateMenu.js";
-import { addItem, removeAndCraft } from "./inventory.js";
+import { addItem, removeAndCraft, addOrRemoveAmmo } from "./inventory.js";
 import { teleport } from "../nav/generateMap.js";
 import { findLocationsAt } from "../nav/coordsMap.js";
 import { damage } from "../combat/damage.js";
@@ -190,6 +190,9 @@ function initCombat(action){
                 if (!gameState.player.inventory.equipment.ammo) {
                     damageInflicted.damage = 0,
                     logger("you need ammo to do that")
+                }
+                else {
+                    addOrRemoveAmmo(null, 1, false)
                 }
         }
 

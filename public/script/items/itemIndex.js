@@ -7,6 +7,7 @@ import { shortbows, longbows, crossbows } from "./weapons/bows.js";
 import { fletchingMaterials, unstrungShortbows, unstrungLongbows } from "./resources/unstrungBow.js";
 import { shields } from "./armor/shields.js";
 import { arrows, arrowTips } from "./resources/arrows.js";
+import { swords, daggers, twoHandedSwords } from "./weapons/swords.js";
 
 export const allItems = {
     ...wood,
@@ -23,5 +24,8 @@ export const allItems = {
     ...shields,
     ...arrows,
     ...arrowTips,
+    ...swords,
+    ...daggers,
+    ...twoHandedSwords,
 
 }

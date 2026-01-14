@@ -11,7 +11,7 @@ export const shortbows = {
     craftSkill: "fletching",
     recipe: { normalShortbowU: 1, bowString: 1 },
     craftXp: 15,
-    stats: { accuracy: 4, strengthBonus: 3, attackSpeed: 5 },
+    stats: { accuracy: 4, strengthBonus: 3, attackSpeed: 3 },
     slot: "mainhand",
     twoHanded: true,
     stackable: false,

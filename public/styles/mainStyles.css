@@ -237,9 +237,17 @@ html {
 
 #craftMenu {
   display: none; /*turn on with flex*/
-  gap: 12px;
+  gap: 15px;
   width: 100%;
   max-width: 900px;
+
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  z-index: 1000;
+  
 }
 
 .craft-left,

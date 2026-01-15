@@ -6,6 +6,7 @@ import { smithingBars } from "./resources/bars.js";
 import { shortbows, longbows, crossbows } from "./weapons/bows.js";
 import { fletchingMaterials, unstrungShortbows, unstrungLongbows } from "./resources/unstrungBow.js";
 import { shields } from "./armor/shields.js";
+import { metalArmor } from "./armor/metalArmor.js";
 import { arrows, arrowTips } from "./resources/arrows.js";
 import { swords, daggers, twoHandedSwords } from "./weapons/swords.js";
 
@@ -22,6 +23,7 @@ export const allItems = {
     ...unstrungLongbows,
     ...unstrungShortbows,
     ...shields,
+    ...metalArmor,
     ...arrows,
     ...arrowTips,
     ...swords,

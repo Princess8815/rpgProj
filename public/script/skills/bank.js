@@ -2,7 +2,6 @@ import { gameState, autoSavePlayer } from "../saveData/saveOrLoadData.js";
 import { allItems } from "../items/itemIndex.js";
 import { parseStack } from "../utilities/textFormat.js";
 import { showPanel } from "../nav/navMenu.js";
-import { updateInventory } from "./inventory.js";
 
 const BANK_SLOTS = 40;
 let bankWithdrawHandler = null;
@@ -53,7 +52,7 @@ export function openBank() {
     ensureBankState();
     gameState.player.bankOpen = true;
     showPanel("bankScreen");
-    updateInventory();
+    document.dispatchEvent(new CustomEvent("bank:open"));
     updateBank();
 }
 
@@ -61,6 +60,7 @@ export function closeBank() {
     if (!gameState.player) return;
     gameState.player.bankOpen = false;
     showPanel("content");
+    document.dispatchEvent(new CustomEvent("bank:close"));
 }
 
 export function addToBank(itemKey, amount = 1) {

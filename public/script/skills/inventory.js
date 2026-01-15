@@ -208,6 +208,10 @@ window.addEventListener("click", () => {
     }
 });
 
+document.addEventListener("bank:open", () => {
+    updateInventory();
+});
+
 const equipMap = {
   helmet:    { c: 2, r: 1 },
   necklace: { c: 2, r: 2 },

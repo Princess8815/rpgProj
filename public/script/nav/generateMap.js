@@ -4,6 +4,7 @@ import { updateCoords, updateAreaAndCheckSurroundings } from "../movement/move.j
 import { changeScreen } from "./navMenu.js";
 import { openCraftMenu } from "../skills/crafting/crafterMenu.js";
 import { logger } from "../main.js";
+import { openBank } from "../skills/bank.js";
 
 export function mapGenerater() {
     const town = document.getElementById("townList")
@@ -81,6 +82,10 @@ export function showCityDetails(city, fullDetails = false) {
                     switch (key) {
                         case "forge":
                             openCraftMenu("smithing")
+                            break;
+                        case "bank":
+                            openBank();
+                            break;
                     }
                     //logic later
             })

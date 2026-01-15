@@ -7,6 +7,7 @@ import { logger } from "../main.js";
 import { openCraftMenu } from "./crafting/crafterMenu.js";
 import { allStats } from "./allStats.js";
 import { getIncDecHp } from "./allStats.js";
+import { addToBank, isBankOpen, setBankWithdrawHandler, updateBank } from "./bank.js";
 
 const INVENTORY_SLOTS = 28;
 
@@ -28,6 +29,16 @@ export function updateInventory() {
     }
 
     const inventoryElement = document.getElementById("inventoryGrid");
+    renderInventoryGrid(inventoryElement);
+
+    if (isBankOpen()) {
+        const bankInventoryElement = document.getElementById("bankInventoryGrid");
+        renderInventoryGrid(bankInventoryElement);
+    }
+}
+
+function renderInventoryGrid(inventoryElement) {
+    if (!inventoryElement) return;
     inventoryElement.innerHTML = "";
 
     for (let i = 0; i < INVENTORY_SLOTS; i++) {
@@ -111,7 +122,7 @@ export function updateInventory() {
 
         invItem.addEventListener("contextmenu", (e) => {
             e.preventDefault(); // kill the default browser menu
-            openItemMenu(e, actualItem, quantity);
+            openItemMenu(e, actualItem, quantity, i);
         });
 
         inventoryElement.appendChild(invItem);
@@ -137,7 +148,7 @@ function runDouble(param, item, quantity) {
     }
 }
 
-function openItemMenu(e, item, quantity) {
+function openItemMenu(e, item, quantity, slotIndex) {
     console.log("open item ran");
 
     // Clear selection any time the context menu is opened.
@@ -166,6 +177,16 @@ function openItemMenu(e, item, quantity) {
     });
     menu.appendChild(dropItem);
 
+    if (isBankOpen()) {
+        const depositItem = document.createElement("div");
+        depositItem.textContent = "deposit";
+        depositItem.classList.add("menu-item");
+        depositItem.addEventListener("click", () => {
+            depositFromInventory(slotIndex);
+        });
+        menu.appendChild(depositItem);
+    }
+
     const examineItem = document.createElement("div");
     examineItem.textContent = "examine";
     examineItem.classList.add("menu-item");
@@ -185,6 +206,10 @@ window.addEventListener("click", () => {
         menu.classList.add("hidden");
         menu.style.display = "none";
     }
+});
+
+document.addEventListener("bank:open", () => {
+    updateInventory();
 });
 
 const equipMap = {
@@ -364,6 +389,25 @@ function examine(item) {
 
 function swap(item1, item2) {
 
+}
+
+function depositFromInventory(slotIndex) {
+    const slotKey = `slot${slotIndex}`;
+    const stored = gameState.player.inventory[slotKey];
+    if (stored === "empty") return;
+
+    const { key, qty } = parseStack(stored);
+    const amount = qty ?? 1;
+
+    if (!addToBank(key, amount)) {
+        logger("bank is full");
+        return;
+    }
+
+    gameState.player.inventory[slotKey] = "empty";
+    updateInventory();
+    updateBank();
+    autoSavePlayer();
 }
 
 export function addItem(itemKey, amount = 1) {
@@ -596,3 +640,23 @@ export function addOrRemoveAmmo(item = null, quantity = 1, add = true) {
     autoSavePlayer();
     return remove;
 }
+
+setBankWithdrawHandler((itemKey, amount) => {
+    if (!allItems[itemKey]) {
+        logger("that item doesn't exist");
+        return false;
+    }
+
+    const isStackable = allItems[itemKey].stackable;
+    if (isStackable) {
+        return addItem(itemKey, amount);
+    }
+
+    for (let i = 0; i < amount; i++) {
+        if (!addItem(itemKey)) {
+            return false;
+        }
+    }
+
+    return true;
+});

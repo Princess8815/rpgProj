@@ -18,6 +18,59 @@ body {
   gap: 8px;
 }
 
+.inventory-bank {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.inventory-panel,
+.bank-panel {
+  background: rgba(15, 15, 15, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.panel-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.bank-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.bank-screen {
+  display: none;
+}
+
+.bank-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.bank-slot {
+  background: #111111;
+  border: 1px solid #444;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f5f5f5;
+}
+
+.bank-slot:hover {
+  background: #2a2a2a;
+}
+
 .inv-slot {
   background: #fcfcfc;
   border: 1px solid #555;
@@ -323,8 +376,6 @@ html {
 .scroll-hover:hover::-webkit-scrollbar-thumb {
   background-color: rgba(255,255,255,0.4);
 }
-
-
 
 
 

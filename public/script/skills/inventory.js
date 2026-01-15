@@ -146,6 +146,7 @@ function openItemMenu(e, item, quantity) {
 
     const menu = document.getElementById("contextMenu");
     menu.innerHTML = "";
+    menu.style.display = "block";
 
     if (item.dbl) {
         const menuItem = document.createElement("div");
@@ -180,7 +181,10 @@ function openItemMenu(e, item, quantity) {
 
 window.addEventListener("click", () => {
     const menu = document.getElementById("contextMenu");
-    if (menu) menu.classList.add("hidden");
+    if (menu) {
+        menu.classList.add("hidden");
+        menu.style.display = "none";
+    }
 });
 
 const equipMap = {

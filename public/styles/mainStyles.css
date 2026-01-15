@@ -241,8 +241,8 @@ html {
   width: 100%;
   max-width: 900px;
 
-  position: fixed;
-  top: 25%;
+  position: absolute;
+  top: 300px;
   left: 50%;
   transform: translate(-50%, -50%);
 

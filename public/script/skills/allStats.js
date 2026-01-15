@@ -180,6 +180,7 @@ function initCombat(action){
         const damageInflicted = damage(enemyStats, playerStats, enemySkills, playerSkills, enemyPrayer, prayer )
         gameState.player.action.combat.enemySpeed = gameState.player.action.combat.enemy.stats.attackSpeed
         getIncDecHp("remove", damageInflicted.damage)
+        console.log(damageInflicted)
         
     }
     if (gameState.player.action.combat.playerSpeed <= 0) {
@@ -194,9 +195,9 @@ function initCombat(action){
                 else {
                     addOrRemoveAmmo(null, 1, false)
                 }
+                break
         }
-
-
+        console.log(damageInflicted)
         gameState.player.action.combat.playerSpeed = gameState.player.action.combat.playerStats.attackSpeed
         gameState.player.action.combat.enemy.stats.health -= damageInflicted.damage
         if (gameState.player.action.combat.enemy.stats.health <= 0) {

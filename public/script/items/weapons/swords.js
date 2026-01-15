@@ -4,7 +4,7 @@ export const swords = {
   bronzeSword: {
     name: "Bronze Sword",
     description: "A dull but usable blade",
-    type: "sword",
+    type: "melee",
     tier: 1,
     dbl: "equip",
     useLevel: 1,
@@ -541,7 +541,7 @@ export const twoHandedSwords = {
   legendsGreatsword: {
     name: "Legends Greatsword",
     description: "One swing, one legend erased",
-    type: "sword",
+    type: "melee",
     tier: 7,
     dbl: "equip",
     useLevel: 60,
@@ -561,7 +561,7 @@ export const twoHandedSwords = {
   imbuedGreatsword: {
     name: "Imbued Greatsword",
     description: "Magic reinforces every devastating strike",
-    type: "sword",
+    type: "melee",
     tier: 8,
     dbl: "equip",
     useLevel: 70,
@@ -581,7 +581,7 @@ export const twoHandedSwords = {
   godsGreatsword: {
     name: "Gods Greatsword",
     description: "The earth cracks when it lands",
-    type: "sword",
+    type: "melee",
     tier: 9,
     dbl: "equip",
     useLevel: 85,

@@ -203,14 +203,17 @@ function getCombatLevels(style, skills) {
     };
   }
 
-  if (style === "magic") {
+    if (style === "magic") {
+        return {
+        accuracyLevel: skills.magic,
+        strengthLevel: skills.magic
+        };
+    }
     return {
-      accuracyLevel: skills.magic,
-      strengthLevel: skills.magic
+      accuracyLevel: skills.attack,
+      strengthLevel: skills.strength
     };
-  }
 
-  throw new Error("Unknown combat style");
 }
 
 

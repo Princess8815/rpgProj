@@ -5,7 +5,7 @@ export const shortbows = {
     tier: 1,
     dbl: "equip",
     useLevel: 1,
-    useSkill: "ranged",
+    useSkill: "range",
     craftable: true,
     craftLevel: 1,
     craftSkill: "fletching",

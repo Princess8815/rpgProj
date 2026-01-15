@@ -142,22 +142,8 @@
 
             <!-- Inventory -->
             <div class="tab-pane fade show active" id="inventoryTab">
-              <div class="inventory-bank" id="inventoryBankWrap">
-                <div class="inventory-panel">
-                  <div class="panel-title">Inventory</div>
-                  <div class="inventory-grid" id="inventoryGrid">
-                    <!-- JS inject items -->
-                  </div>
-                </div>
-                <div class="bank-panel is-hidden" id="bankPanel">
-                  <div class="bank-header">
-                    <span class="panel-title">Bank</span>
-                    <button id="closeBank" class="btn btn-sm btn-outline-light">Close</button>
-                  </div>
-                  <div class="bank-grid" id="bankGrid">
-                    <!-- JS inject bank items -->
-                  </div>
-                </div>
+              <div class="inventory-grid" id="inventoryGrid">
+                <!-- JS inject items -->
               </div>
             </div>
 
@@ -273,6 +259,31 @@
 </div>
 
 <div id="contextMenu" class="context-menu hidden"></div>
+
+<div id="bankScreen" class="bank-screen">
+  <div class="details-card">
+    <div class="bank-header">
+      <h1 class="panel-title">Bank</h1>
+      <div class="btn-row">
+        <button id="closeBank" class="btn btn-sm btn-outline-light">Back</button>
+      </div>
+    </div>
+    <div class="inventory-bank">
+      <div class="inventory-panel">
+        <div class="panel-title">Inventory</div>
+        <div class="inventory-grid" id="bankInventoryGrid">
+          <!-- JS inject items -->
+        </div>
+      </div>
+      <div class="bank-panel" id="bankPanel">
+        <div class="panel-title">Bank Storage</div>
+        <div class="bank-grid" id="bankGrid">
+          <!-- JS inject bank items -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="craftMenu">
   <button class="homeBtn">Back</button>

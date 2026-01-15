@@ -1,6 +1,8 @@
 import { gameState, autoSavePlayer } from "../saveData/saveOrLoadData.js";
 import { allItems } from "../items/itemIndex.js";
 import { parseStack } from "../utilities/textFormat.js";
+import { showPanel } from "../nav/navMenu.js";
+import { updateInventory } from "./inventory.js";
 
 const BANK_SLOTS = 40;
 let bankWithdrawHandler = null;
@@ -30,20 +32,6 @@ function ensureBankState() {
     }
 }
 
-function setBankVisibility(isOpen) {
-    const bankPanel = document.getElementById("bankPanel");
-    const wrapper = document.getElementById("inventoryBankWrap");
-    if (!bankPanel || !wrapper) return;
-
-    if (isOpen) {
-        bankPanel.classList.remove("is-hidden");
-        wrapper.classList.add("bank-open");
-    } else {
-        bankPanel.classList.add("is-hidden");
-        wrapper.classList.remove("bank-open");
-    }
-}
-
 export function initializeBankUI() {
     const closeBtn = document.getElementById("closeBank");
     if (closeBtn) {
@@ -64,18 +52,15 @@ export function isBankOpen() {
 export function openBank() {
     ensureBankState();
     gameState.player.bankOpen = true;
-    setBankVisibility(true);
-    const inventoryTabTrigger = document.querySelector('[data-bs-target="#inventoryTab"]');
-    if (inventoryTabTrigger) {
-        inventoryTabTrigger.click();
-    }
+    showPanel("bankScreen");
+    updateInventory();
     updateBank();
 }
 
 export function closeBank() {
     if (!gameState.player) return;
     gameState.player.bankOpen = false;
-    setBankVisibility(false);
+    showPanel("content");
 }
 
 export function addToBank(itemKey, amount = 1) {

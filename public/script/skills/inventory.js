@@ -29,6 +29,16 @@ export function updateInventory() {
     }
 
     const inventoryElement = document.getElementById("inventoryGrid");
+    renderInventoryGrid(inventoryElement);
+
+    if (isBankOpen()) {
+        const bankInventoryElement = document.getElementById("bankInventoryGrid");
+        renderInventoryGrid(bankInventoryElement);
+    }
+}
+
+function renderInventoryGrid(inventoryElement) {
+    if (!inventoryElement) return;
     inventoryElement.innerHTML = "";
 
     for (let i = 0; i < INVENTORY_SLOTS; i++) {

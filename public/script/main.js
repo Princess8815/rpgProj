@@ -10,6 +10,7 @@ import "./movement/move.js"
 import "./chat/global.js"
 import "./skills/inventory.js"
 import "./skills/allStats.js"
+import { initializeBankUI } from "./skills/bank.js"
 import "./nav/coordsMap.js"
 import "./skills/skillIntervals.js"
 
@@ -21,6 +22,8 @@ import { gameState } from "./saveData/saveOrLoadData.js"
 save.addEventListener("click", () => {
     saveIfVersionChanged()
 })
+
+initializeBankUI();
 
 
 
@@ -64,4 +67,3 @@ export function setName(){
 //useful console commands
 //firebase deploy --only hosting //to redeploy site
 //firebase serve //to start local host server
-

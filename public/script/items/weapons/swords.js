@@ -27,7 +27,7 @@ export const swords = {
   ironSword: {
     name: "Iron Sword",
     description: "Better balance and edge",
-    type: "sword",
+    type: "melee",
     tier: 2,
     dbl: "equip",
     useLevel: 5,
@@ -50,7 +50,7 @@ export const swords = {
   steelSword: {
     name: "Steel Sword",
     description: "Reliable and battle-ready",
-    type: "sword",
+    type: "melee",
     tier: 3,
     dbl: "equip",
     useLevel: 10,
@@ -73,7 +73,7 @@ export const swords = {
   mithrilSword: {
     name: "Mithril Sword",
     description: "Lightweight and vicious",
-    type: "sword",
+    type: "melee",
     tier: 4,
     dbl: "equip",
     useLevel: 20,
@@ -96,7 +96,7 @@ export const swords = {
   adamantiteSword: {
     name: "Adamantite Sword",
     description: "Heavy hits, steady rhythm",
-    type: "sword",
+    type: "melee",
     tier: 5,
     dbl: "equip",
     useLevel: 30,
@@ -119,7 +119,7 @@ export const swords = {
   stariteSword: {
     name: "Starite Sword",
     description: "Star-forged and terrifying",
-    type: "sword",
+    type: "melee",
     tier: 6,
     dbl: "equip",
     useLevel: 45,
@@ -142,7 +142,7 @@ export const swords = {
   legendsSword: {
     name: "Legends Sword",
     description: "A blade whispered about",
-    type: "sword",
+    type: "melee",
     tier: 7,
     dbl: "equip",
     useLevel: 60,
@@ -161,7 +161,7 @@ export const swords = {
   imbuedSword: {
     name: "Imbued Sword",
     description: "Arcane power sealed in steel",
-    type: "sword",
+    type: "melee",
     tier: 8,
     dbl: "equip",
     useLevel: 70,
@@ -180,7 +180,7 @@ export const swords = {
   godsSword: {
     name: "Gods Sword",
     description: "Divine judgment in metal form",
-    type: "sword",
+    type: "melee",
     tier: 9,
     dbl: "equip",
     useLevel: 85,
@@ -397,7 +397,7 @@ export const twoHandedSwords = {
   bronzeGreatsword: {
     name: "Bronze Greatsword",
     description: "A heavy, unwieldy slab of bronze",
-    type: "sword",
+    type: "melee",
     tier: 1,
     dbl: "equip",
     useLevel: 1,
@@ -421,7 +421,7 @@ export const twoHandedSwords = {
   ironGreatsword: {
     name: "Iron Greatsword",
     description: "Slow, brutal, effective",
-    type: "sword",
+    type: "melee",
     tier: 2,
     dbl: "equip",
     useLevel: 5,
@@ -445,7 +445,7 @@ export const twoHandedSwords = {
   steelGreatsword: {
     name: "Steel Greatsword",
     description: "Crushes armor and bones alike",
-    type: "sword",
+    type: "melee",
     tier: 3,
     dbl: "equip",
     useLevel: 10,
@@ -469,7 +469,7 @@ export const twoHandedSwords = {
   mithrilGreatsword: {
     name: "Mithril Greatsword",
     description: "Lighter, faster, still devastating",
-    type: "sword",
+    type: "melee",
     tier: 4,
     dbl: "equip",
     useLevel: 20,
@@ -493,7 +493,7 @@ export const twoHandedSwords = {
   adamantiteGreatsword: {
     name: "Adamantite Greatsword",
     description: "Each swing ends arguments",
-    type: "sword",
+    type: "melee",
     tier: 5,
     dbl: "equip",
     useLevel: 30,
@@ -517,7 +517,7 @@ export const twoHandedSwords = {
   stariteGreatsword: {
     name: "Starite Greatsword",
     description: "Forged from fallen stars and bad intentions",
-    type: "sword",
+    type: "melee",
     tier: 6,
     dbl: "equip",
     useLevel: 45,

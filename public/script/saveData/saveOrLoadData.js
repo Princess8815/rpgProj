@@ -26,6 +26,7 @@ export const emptyGameState = {
     ranged: "balanced",
     magic: "balanced"
   },
+  bank: {space: 40},
   version: 1,
   savedVersion: 1,
   saves: 0 //using to track saves

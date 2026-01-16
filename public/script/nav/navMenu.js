@@ -1,4 +1,5 @@
 import { mapGenerater } from "./generateMap.js";
+import { updateInventory } from "../skills/inventory.js";
 
 export function changeScreen(navItem) {
     switch (navItem) {
@@ -8,6 +9,10 @@ export function changeScreen(navItem) {
             break
         case "home":
             showPanel("content")
+            
+            break
+        case "bank":
+            showPanel("bankArea")
             break
     }
 }
@@ -32,6 +37,7 @@ export function showPanel(panelId) {
 document.querySelectorAll(".homeBtn").forEach(btn => {
   btn.addEventListener("click", () => {
     showPanel("content");
+    updateInventory()
   });
 });
 

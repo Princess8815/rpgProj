@@ -18,6 +18,7 @@ import { logger } from "./main.js";
 
 resetInv.addEventListener("click", () => {
     gameState.player.inventory = null
+    gameState.player.bank = {space: 40}
     updateInventory()
     savePlayerData(gameState.player)
 })
@@ -30,13 +31,15 @@ addLog.addEventListener("click", () => {
 })
 
 addAxe.addEventListener("click", () => {
-    // addItem("bronzeAxe");
-    // addItem("ironAxe")
+    addAxe.textContent = "add stuff"
+    addItem("bronzeAxe");
+    addItem("ironAxe")
     addResetCheckSkill("exploration", "add", 250)
     getIncDecHp("remove", 1)
     addItem("bronzePickaxe");
     addItem("normalShortbow");
     addItem("bronzeShield");
+    addItem("normalLog", 5)
 })
 
 button3.addEventListener("click", () => {
